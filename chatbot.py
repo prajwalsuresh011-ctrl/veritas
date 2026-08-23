@@ -1,8 +1,32 @@
 import re
-import ollama
+import os
+
+import streamlit as st
 
 from url_checker import analyze_url
 from database import get_history
+
+
+# ====================================================
+# OPTIONAL LOCAL OLLAMA
+# ====================================================
+
+try:
+    import ollama
+    OLLAMA_AVAILABLE = True
+except ImportError:
+    OLLAMA_AVAILABLE = False
+
+
+# ====================================================
+# GEMINI
+# ====================================================
+
+try:
+    from google import genai
+    GEMINI_AVAILABLE = True
+except ImportError:
+    GEMINI_AVAILABLE = False
 
 
 # ====================================================
@@ -22,6 +46,90 @@ def extract_url(text):
         return match.group(0).rstrip(".,!?")
 
     return None
+
+
+# ====================================================
+# GEMINI RESPONSE
+# ====================================================
+
+def ask_gemini(prompt):
+
+    if not GEMINI_AVAILABLE:
+
+        return (
+            "⚠️ Gemini library is not installed.\n\n"
+            "Please add `google-genai` to requirements.txt."
+        )
+
+    try:
+
+        api_key = st.secrets.get(
+            "GEMINI_API_KEY",
+            os.getenv("GEMINI_API_KEY")
+        )
+
+        if not api_key:
+
+            return (
+                "⚠️ Gemini API key is not configured.\n\n"
+                "Please add GEMINI_API_KEY to "
+                "Streamlit Secrets."
+            )
+
+        client = genai.Client(
+            api_key=api_key
+        )
+
+        response = client.models.generate_content(
+            model="gemini-3.7-flash",
+            contents=prompt
+        )
+
+        return response.text
+
+    except Exception as e:
+
+        return (
+            "⚠️ Veritas AI could not connect "
+            "to the Gemini API.\n\n"
+            f"Error: {e}"
+        )
+
+
+# ====================================================
+# OLLAMA RESPONSE
+# ====================================================
+
+def ask_ollama(prompt):
+
+    if not OLLAMA_AVAILABLE:
+
+        return None
+
+    try:
+
+        response = ollama.chat(
+            model="llama3.2",
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "You are Veritas AI, "
+                        "a helpful cybersecurity assistant."
+                    )
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+        )
+
+        return response["message"]["content"]
+
+    except Exception:
+
+        return None
 
 
 # ====================================================
@@ -70,6 +178,7 @@ Give practical safety advice.
 
 Do not invent scan results.
 Do not claim that the website is completely safe.
+Base your answer only on the provided analysis.
 """
 
         except Exception as e:
@@ -179,35 +288,21 @@ Keep the answer reasonably concise.
 """
 
     # ====================================================
-    # OLLAMA
+    # TRY LOCAL OLLAMA FIRST
     # ====================================================
 
-    try:
+    ollama_response = ask_ollama(
+        prompt
+    )
 
-        response = ollama.chat(
-            model="llama3.2",
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You are Veritas AI, "
-                        "a helpful cybersecurity assistant."
-                    )
-                },
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ]
-        )
+    if ollama_response:
 
-        return response["message"]["content"]
+        return ollama_response
 
-    except Exception as e:
+    # ====================================================
+    # FALLBACK TO GEMINI
+    # ====================================================
 
-        return (
-            "⚠️ Veritas AI could not connect to Ollama.\n\n"
-            f"Error: {e}\n\n"
-            "Please make sure Ollama is running and "
-            "the llama3.2 model is available."
-        )
+    return ask_gemini(
+        prompt
+    )
