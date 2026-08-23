@@ -1,4 +1,6 @@
 import sqlite3
+from datetime import datetime
+import uuid
 
 
 DATABASE_NAME = "veritas.db"
@@ -9,7 +11,6 @@ DATABASE_NAME = "veritas.db"
 # ====================================================
 
 def get_connection():
-
     return sqlite3.connect(DATABASE_NAME)
 
 
@@ -22,10 +23,10 @@ def create_table():
     conn = get_connection()
     cursor = conn.cursor()
 
-    # Create table if it does not exist
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS scans (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            verification_id TEXT UNIQUE,
             username TEXT,
             scan_type TEXT,
             target TEXT,
@@ -43,7 +44,7 @@ def create_table():
         for column in cursor.fetchall()
     ]
 
-    # Add username to old database if missing
+    # Add missing columns for old databases
     if "username" not in columns:
 
         cursor.execute("""
@@ -51,8 +52,54 @@ def create_table():
             ADD COLUMN username TEXT
         """)
 
+    if "verification_id" not in columns:
+
+        cursor.execute("""
+            ALTER TABLE scans
+            ADD COLUMN verification_id TEXT
+        """)
+
+        # Give old records verification IDs
+        cursor.execute("""
+            SELECT id
+            FROM scans
+            WHERE verification_id IS NULL
+        """)
+
+        old_records = cursor.fetchall()
+
+        for row in old_records:
+
+            verification_id = (
+                "VERITAS-"
+                f"{datetime.now().year}-"
+                f"{uuid.uuid4().hex[:8].upper()}"
+            )
+
+            cursor.execute("""
+                UPDATE scans
+                SET verification_id = ?
+                WHERE id = ?
+            """, (
+                verification_id,
+                row[0]
+            ))
+
     conn.commit()
     conn.close()
+
+
+# ====================================================
+# GENERATE VERIFICATION ID
+# ====================================================
+
+def generate_verification_id():
+
+    return (
+        "VERITAS-"
+        f"{datetime.now().year}-"
+        f"{uuid.uuid4().hex[:8].upper()}"
+    )
 
 
 # ====================================================
@@ -70,17 +117,21 @@ def save_scan(
     conn = get_connection()
     cursor = conn.cursor()
 
+    verification_id = generate_verification_id()
+
     cursor.execute("""
         INSERT INTO scans
         (
+            verification_id,
             username,
             scan_type,
             target,
             score,
             status
         )
-        VALUES (?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?)
     """, (
+        verification_id,
         username,
         scan_type,
         target,
@@ -90,6 +141,8 @@ def save_scan(
 
     conn.commit()
     conn.close()
+
+    return verification_id
 
 
 # ====================================================
@@ -109,7 +162,8 @@ def get_history(username):
             target,
             score,
             status,
-            date
+            date,
+            verification_id
         FROM scans
         WHERE username = ?
         ORDER BY id DESC
@@ -120,6 +174,63 @@ def get_history(username):
     conn.close()
 
     return history
+
+
+# ====================================================
+# GET SCAN BY VERIFICATION ID
+# ====================================================
+
+def get_scan_by_verification_id(
+    verification_id,
+    username=None
+):
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    if username:
+
+        cursor.execute("""
+            SELECT
+                id,
+                verification_id,
+                username,
+                scan_type,
+                target,
+                score,
+                status,
+                date
+            FROM scans
+            WHERE verification_id = ?
+            AND username = ?
+        """, (
+            verification_id,
+            username
+        ))
+
+    else:
+
+        cursor.execute("""
+            SELECT
+                id,
+                verification_id,
+                username,
+                scan_type,
+                target,
+                score,
+                status,
+                date
+            FROM scans
+            WHERE verification_id = ?
+        """, (
+            verification_id
+        ))
+
+    result = cursor.fetchone()
+
+    conn.close()
+
+    return result
 
 
 # ====================================================
