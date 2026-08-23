@@ -1802,40 +1802,106 @@ elif selected == "Document":
                             "No suspicious indicators were detected."
                         )
 
-                   # ====================================================
-# PDF VERIFICATION REPORT
-# ====================================================
+                    st.divider()
 
-st.divider()
+                    # ====================================================
+                    # EXTRACTED CONTENT
+                    # ====================================================
 
-st.subheader("📄 Verification Report")
+                    st.subheader(
+                        "📖 Extracted Content"
+                    )
 
-try:
+                    if extracted_text:
 
-    report_path = generate_report(
-        "Document",
-        uploaded_document.name,
-        score,
-        status,
-        reasons
-    )
+                        with st.expander(
+                            "View extracted document text"
+                        ):
 
-    with open(report_path, "rb") as pdf_file:
+                            st.text(
+                                str(extracted_text)
+                            )
 
-        st.download_button(
-            label="📥 Download PDF Report",
-            data=pdf_file,
-            file_name="Veritas_Document_Report.pdf",
-            mime="application/pdf",
-            use_container_width=True,
-            key="document_report_download"
-        )
+                    else:
 
-except Exception as e:
+                        st.info(
+                            "No readable text was extracted from this document."
+                        )
 
-    st.warning(
-        f"⚠️ Report generation unavailable: {e}"
-    )
+                    st.divider()
+
+                    # ====================================================
+                    # AI VERDICT
+                    # ====================================================
+
+                    st.subheader(
+                        "🧠 AI Verdict"
+                    )
+
+                    try:
+
+                        recommendation = generate_recommendation(
+                            status,
+                            reasons
+                        )
+
+                        st.info(
+                            recommendation
+                        )
+
+                    except Exception:
+
+                        st.info(
+                            "Review the document carefully before trusting its contents."
+                        )
+
+                    st.divider()
+
+                    # ====================================================
+                    # PDF VERIFICATION REPORT
+                    # ====================================================
+
+                    st.subheader(
+                        "📄 Verification Report"
+                    )
+
+                    try:
+
+                        report_path = generate_report(
+                            "Document",
+                            uploaded_document.name,
+                            score,
+                            status,
+                            reasons
+                        )
+
+                        with open(
+                            report_path,
+                            "rb"
+                        ) as pdf_file:
+
+                            st.download_button(
+                                label="📥 Download PDF Report",
+                                data=pdf_file,
+                                file_name="Veritas_Document_Report.pdf",
+                                mime="application/pdf",
+                                use_container_width=True,
+                                key="document_report_download"
+                            )
+
+                    except Exception as report_error:
+
+                        st.warning(
+                            f"⚠️ Report generation unavailable: {report_error}"
+                        )
+
+                except Exception as e:
+
+                    st.error(
+                        f"❌ Document analysis error: {e}"
+             )
+
+
                     # ====================================================
                     # AI VERDICT
                     # ====================================================
