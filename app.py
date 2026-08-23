@@ -345,10 +345,9 @@ st.markdown(
     
 
 
-
-# =========================
-# Session State
-# =========================
+# ====================================================
+# SESSION STATE
+# ====================================================
 
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
@@ -356,23 +355,13 @@ if "logged_in" not in st.session_state:
 if "username" not in st.session_state:
     st.session_state.username = ""
 
+if "selected_page" not in st.session_state:
+    st.session_state.selected_page = "Home"
 
-# =========================
-#
+
 # ====================================================
-# OPTION MENU
-# ====================================================
-# ====================================================
-# LOGIN / # ====================================================
 # LOGIN / REGISTER
 # ====================================================
-
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-
-if "username" not in st.session_state:
-    st.session_state.username = ""
-
 
 if not st.session_state.logged_in:
 
@@ -380,7 +369,9 @@ if not st.session_state.logged_in:
     # LOGIN LOGO
     # ====================================================
 
-    col1, col2, col3 = st.columns([1, 2, 1])
+    col1, col2, col3 = st.columns(
+        [1, 2, 1]
+    )
 
     with col2:
 
@@ -389,23 +380,40 @@ if not st.session_state.logged_in:
             width=150
         )
 
-        st.title("🛡️ Veritas Login")
+        st.title(
+            "🛡️ Veritas Login"
+        )
+
+        # ====================================================
+        # LOGIN / REGISTER SELECTOR
+        # ====================================================
 
         choice = st.selectbox(
             "Select Option",
             [
                 "Login",
                 "Register"
-            ]
+            ],
+            key="login_register_choice"
         )
 
+        # ====================================================
+        # USERNAME
+        # ====================================================
+
         username = st.text_input(
-            "Username"
+            "Username",
+            key="login_username"
         )
+
+        # ====================================================
+        # PASSWORD
+        # ====================================================
 
         password = st.text_input(
             "Password",
-            type="password"
+            type="password",
+            key="login_password"
         )
 
         # ====================================================
@@ -414,24 +422,43 @@ if not st.session_state.logged_in:
 
         if choice == "Register":
 
-            if st.button("Create Account"):
+            if st.button(
+                "Create Account",
+                use_container_width=True,
+                key="register_button"
+            ):
 
-                result = register_user(
-                    username,
-                    password
-                )
+                if not username.strip():
 
-                if result:
+                    st.warning(
+                        "Please enter a username."
+                    )
 
-                    st.success(
-                        "Account created successfully. Please login."
+                elif not password:
+
+                    st.warning(
+                        "Please enter a password."
                     )
 
                 else:
 
-                    st.error(
-                        "Username already exists."
+                    result = register_user(
+                        username.strip(),
+                        password
                     )
+
+                    if result:
+
+                        st.success(
+                            "✅ Account created successfully. "
+                            "Please select Login and sign in."
+                        )
+
+                    else:
+
+                        st.error(
+                            "❌ Username already exists."
+                        )
 
         # ====================================================
         # LOGIN
@@ -439,32 +466,59 @@ if not st.session_state.logged_in:
 
         else:
 
-            if st.button("Login"):
+            if st.button(
+                "Login",
+                use_container_width=True,
+                key="login_button"
+            ):
 
-                user = login_user(
-                    username,
-                    password
-                )
+                if not username.strip():
 
-                if user:
-
-                    st.session_state.logged_in = True
-                    st.session_state.username = username
-
-                    st.success(
-                        "Login Successful"
+                    st.warning(
+                        "Please enter your username."
                     )
 
-                    st.rerun()
+                elif not password:
+
+                    st.warning(
+                        "Please enter your password."
+                    )
 
                 else:
 
-                    st.error(
-                        "Invalid username or password"
+                    user = login_user(
+                        username.strip(),
+                        password
                     )
 
-    # Stop ONLY when user is not logged in
+                    if user:
+
+                        st.session_state.logged_in = True
+
+                        st.session_state.username = (
+                            username.strip()
+                        )
+
+                        st.session_state.selected_page = "Home"
+
+                        st.success(
+                            "✅ Login successful!"
+                        )
+
+                        st.rerun()
+
+                    else:
+
+                        st.error(
+                            "❌ Invalid username or password."
+                        )
+
+    # ====================================================
+    # STOP APP WHEN NOT LOGGED IN
+    # ====================================================
+
     st.stop()
+
 
 # ====================================================
 # SIDEBAR
