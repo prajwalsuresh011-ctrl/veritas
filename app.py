@@ -501,7 +501,7 @@ else:
 
 
 # ====================================================
-# # ====================================================
+# # # ====================================================
 # SIDEBAR
 # ====================================================
 
@@ -516,13 +516,18 @@ navigation_options = [
     "AI Assistant",
     "Settings"
 ]
+
 
 # ====================================================
 # HOME NAVIGATION
 # ====================================================
 
+if "home_navigation" not in st.session_state:
+    st.session_state.home_navigation = None
+
+
 if (
-    "home_navigation" in st.session_state
+    st.session_state.home_navigation
     and st.session_state.home_navigation in navigation_options
 ):
 
@@ -537,32 +542,7 @@ else:
 
 # ====================================================
 # SIDEBAR
-# # ====================================================
-# SIDEBAR
 # ====================================================
-
-navigation_options = [
-    "Home",
-    "URL",
-    "QR Code",
-    "Document",
-    "Image",
-    "History",
-    "Analytics",
-    "AI Assistant",
-    "Settings"
-]
-
-if (
-    "home_navigation" in st.session_state
-    and st.session_state.home_navigation in navigation_options
-):
-    default_index = navigation_options.index(
-        st.session_state.home_navigation
-    )
-else:
-    default_index = 0
-
 
 with st.sidebar:
 
@@ -573,7 +553,12 @@ with st.sidebar:
 
     st.title("Veritas")
 
+    # ====================================================
+    # OPTION MENU
+    # ====================================================
+
     selected = option_menu(
+
         menu_title="Navigation",
 
         options=navigation_options,
@@ -597,6 +582,7 @@ with st.sidebar:
         orientation="vertical",
 
         styles={
+
             "container": {
                 "padding": "5px"
             },
@@ -645,6 +631,13 @@ with st.sidebar:
         st.session_state.home_navigation = None
 
         st.rerun()
+
+
+# ====================================================
+# CLEAR TEMPORARY HOME NAVIGATION
+# ====================================================
+
+st.session_state.home_navigation = None
 
 
 # ====================================================
