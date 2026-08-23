@@ -360,6 +360,7 @@ if "username" not in st.session_state:
 # OPTION MENU
 # ====================================================
 # ====================================================
+# LOGIN / # ====================================================
 # LOGIN / REGISTER
 # ====================================================
 
@@ -368,6 +369,7 @@ if "logged_in" not in st.session_state:
 
 if "username" not in st.session_state:
     st.session_state.username = ""
+
 
 if not st.session_state.logged_in:
 
@@ -394,64 +396,74 @@ if not st.session_state.logged_in:
             ]
         )
 
-    username = st.text_input(
-        "Username"
-    )
+        username = st.text_input(
+            "Username"
+        )
 
-    password = st.text_input(
-        "Password",
-        type="password"
-    )
+        password = st.text_input(
+            "Password",
+            type="password"
+        )
 
-    if choice == "Register":
+        # ====================================================
+        # REGISTER
+        # ====================================================
 
-        if st.button("Create Account"):
+        if choice == "Register":
 
-            result = register_user(
-                username,
-                password
-            )
+            if st.button("Create Account"):
 
-            if result:
-
-                st.success(
-                    "Account created successfully. Please login."
+                result = register_user(
+                    username,
+                    password
                 )
 
-            else:
+                if result:
 
-                st.error(
-                    "Username already exists."
+                    st.success(
+                        "Account created successfully. Please login."
+                    )
+
+                else:
+
+                    st.error(
+                        "Username already exists."
+                    )
+
+        # ====================================================
+        # LOGIN
+        # ====================================================
+
+        else:
+
+            if st.button("Login"):
+
+                user = login_user(
+                    username,
+                    password
                 )
 
-    else:
+                if user:
 
-        if st.button("Login"):
+                    st.session_state.logged_in = True
+                    st.session_state.username = username
 
-            user = login_user(
-                username,
-                password
-            )
+                    st.success(
+                        "Login Successful"
+                    )
 
-            if user:
+                    st.rerun()
 
-                st.session_state.logged_in = True
-                st.session_state.username = username
+                else:
 
-                st.success("Login Successful")
-                st.rerun()
+                    st.error(
+                        "Invalid username or password"
+                    )
 
-            else:
-
-                st.error(
-                    "Invalid username or password"
-                )
-
-st.stop()
+    # Stop ONLY when user is not logged in
+    st.stop()
 
 
-# ====================================================
-# # ====================================================
 # ====================================================
 # SIDEBAR
 # ====================================================
