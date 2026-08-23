@@ -467,38 +467,6 @@ if not st.session_state.logged_in:
     # Stop ONLY when user is not logged in
     st.stop()
 
-# ====================================================
-# # # ====================================================
-# SIDEBAR
-# # ====================================================
-# SIDEBAR NAVIGATION
-# ====================================================
-
-navigation_options = [
-    "Home",
-    "URL",
-    "QR Code",
-    "Document",
-    "Image",
-    "History",
-    "Verify ID",
-    "Analytics",
-    "AI Assistant",
-    "Settings"
-]
-
-# ====================================================
-# HOME NAVIGATION
-# # ====================================================
-# HOME NAVIGATION
-# ====================================================
-
-# ====================================================
-# NAVIGATION STATE
-# ====================================================
-
-if "selected_page" not in st.session_state:
-    st.session_state.selected_page = "Home"
 
 
 # ====================================================
