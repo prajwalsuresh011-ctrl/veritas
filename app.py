@@ -488,10 +488,14 @@ navigation_options = [
 # ====================================================
 # HOME NAVIGATION
 # ====================================================
+if "home_navigation" in st.session_state:
+    st.session_state.home_navigation = None
+# ====================================================
+# HOME NAVIGATION
+# ====================================================
 
 if "home_navigation" not in st.session_state:
     st.session_state.home_navigation = None
-
 
 if (
     st.session_state.home_navigation
@@ -507,6 +511,9 @@ else:
     default_index = 0
 
 
+# ====================================================
+# SIDEBAR
+# ====================================================
 
 with st.sidebar:
 
@@ -516,10 +523,6 @@ with st.sidebar:
     )
 
     st.title("Veritas")
-
-    # ====================================================
-    # OPTION MENU
-    # ====================================================
 
     selected = option_menu(
 
@@ -546,7 +549,6 @@ with st.sidebar:
         orientation="vertical",
 
         styles={
-
             "container": {
                 "padding": "5px"
             },
@@ -573,17 +575,9 @@ with st.sidebar:
 
     st.divider()
 
-    # ====================================================
-    # USER INFORMATION
-    # ====================================================
-
     st.write(
         f"👤 Logged in as: **{st.session_state.username}**"
     )
-
-    # ====================================================
-    # LOGOUT
-    # ====================================================
 
     if st.button(
         "🚪 Logout",
@@ -592,26 +586,12 @@ with st.sidebar:
 
         st.session_state.logged_in = False
         st.session_state.username = ""
+
         st.session_state.home_navigation = None
 
         st.rerun()
 
 
-# ====================================================
-# CLEAR TEMPORARY HOME NAVIGATION
-# ====================================================
-
-st.session_state.home_navigation = None
-
-
-
-# IMPORTANT:
-# Do NOT put this before the elif navigation chain.
-#
-# We clear it after determining the selected page.
-
-if "home_navigation" in st.session_state:
-    st.session_state.home_navigation = None
 
 
 # ====================================================
