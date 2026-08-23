@@ -493,21 +493,12 @@ navigation_options = [
 # HOME NAVIGATION
 # ====================================================
 
-if "home_navigation" not in st.session_state:
-    st.session_state.home_navigation = None
+# ====================================================
+# NAVIGATION STATE
+# ====================================================
 
-if (
-    st.session_state.home_navigation
-    and st.session_state.home_navigation in navigation_options
-):
-
-    default_index = navigation_options.index(
-        st.session_state.home_navigation
-    )
-
-else:
-
-    default_index = 0
+if "selected_page" not in st.session_state:
+    st.session_state.selected_page = "Home"
 
 
 # ====================================================
