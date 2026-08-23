@@ -467,39 +467,6 @@ if not st.session_state.logged_in:
     # Stop ONLY when user is not logged in
     st.stop()
 
-
-# ====================================================
-## ====================================================
-# SIDEBAR
-# ====================================================
-
-navigation_options = [
-    "Home",
-    "URL",
-    "QR Code",
-    "Document",
-    "Image",
-    "History",
-    "Analytics",
-    "AI Assistant",
-    "Settings"
-]
-
-# ====================================================
-# HOME NAVIGATION
-# ====================================================
-
-if (
-    "home_navigation" in st.session_state
-    and st.session_state.home_navigation in navigation_options
-):
-    default_index = navigation_options.index(
-        st.session_state.home_navigation
-    )
-else:
-    default_index = 0
-
-
 # ====================================================
 # # # ====================================================
 # SIDEBAR
