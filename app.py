@@ -2912,7 +2912,117 @@ elif selected == "Settings":
 
     st.divider()
 
+    # 
     # ====================================================
+    # ACCOUNT INFORMATION
+    # ====================================================
+
+    st.subheader(
+        "👤 Account Information"
+    )
+
+    st.write(
+        f"**Username:** "
+        f"{st.session_state.username}"
+    )
+
+    st.divider()
+
+    # ====================================================
+    # APPLICATION INFORMATION
+    # ====================================================
+
+    st.subheader(
+        "🛡️ Veritas"
+    )
+
+    st.write(
+        "**Version:** 1.0"
+    )
+
+    st.write(
+        "**Platform:** "
+        "AI-Powered Digital Verification System"
+    )
+
+    st.write(
+        "**Verification Modules:** "
+        "URL, QR Code, Document, Image"
+    )
+
+    st.divider()
+
+    # ====================================================
+    # DATA MANAGEMENT
+    # ====================================================
+
+    st.subheader(
+        "🗑️ Data Management"
+    )
+
+    st.write(
+        "Clear all verification history "
+        "associated with your account."
+    )
+
+    if st.button(
+        "🗑️ Clear My Scan History",
+        key="settings_clear_history",
+        use_container_width=True
+    ):
+
+        clear_history(
+            st.session_state.username
+        )
+
+        st.success(
+            "Your scan history has been "
+            "cleared successfully."
+        )
+
+        st.rerun()
+
+    st.divider()
+
+    # ====================================================
+    # SECURITY
+    # ====================================================
+
+    st.subheader(
+        "🔐 Security"
+    )
+
+    st.success(
+        "Your verification history is "
+        "associated with your account."
+    )
+
+    st.info(
+        "Always verify suspicious URLs, QR codes, "
+        "documents and images before trusting them."
+    )
+
+    st.divider()
+
+    # ====================================================
+    # LOGOUT
+    # ====================================================
+
+    st.subheader(
+        "🚪 Account"
+    )
+
+    if st.button(
+        "🚪 Logout",
+        key="settings_logout",
+        use_container_width=True
+    ):
+
+        st.session_state.logged_in = False
+        st.session_state.username = ""
+
+        st.rerun()
+        ====================================================
 # VERIFY ID
 # ====================================================
 
@@ -3028,112 +3138,3 @@ elif selected == "Verify ID":
                     "in your verification history."
                 )
 
-    # ====================================================
-    # ACCOUNT INFORMATION
-    # ====================================================
-
-    st.subheader(
-        "👤 Account Information"
-    )
-
-    st.write(
-        f"**Username:** "
-        f"{st.session_state.username}"
-    )
-
-    st.divider()
-
-    # ====================================================
-    # APPLICATION INFORMATION
-    # ====================================================
-
-    st.subheader(
-        "🛡️ Veritas"
-    )
-
-    st.write(
-        "**Version:** 1.0"
-    )
-
-    st.write(
-        "**Platform:** "
-        "AI-Powered Digital Verification System"
-    )
-
-    st.write(
-        "**Verification Modules:** "
-        "URL, QR Code, Document, Image"
-    )
-
-    st.divider()
-
-    # ====================================================
-    # DATA MANAGEMENT
-    # ====================================================
-
-    st.subheader(
-        "🗑️ Data Management"
-    )
-
-    st.write(
-        "Clear all verification history "
-        "associated with your account."
-    )
-
-    if st.button(
-        "🗑️ Clear My Scan History",
-        key="settings_clear_history",
-        use_container_width=True
-    ):
-
-        clear_history(
-            st.session_state.username
-        )
-
-        st.success(
-            "Your scan history has been "
-            "cleared successfully."
-        )
-
-        st.rerun()
-
-    st.divider()
-
-    # ====================================================
-    # SECURITY
-    # ====================================================
-
-    st.subheader(
-        "🔐 Security"
-    )
-
-    st.success(
-        "Your verification history is "
-        "associated with your account."
-    )
-
-    st.info(
-        "Always verify suspicious URLs, QR codes, "
-        "documents and images before trusting them."
-    )
-
-    st.divider()
-
-    # ====================================================
-    # LOGOUT
-    # ====================================================
-
-    st.subheader(
-        "🚪 Account"
-    )
-
-    if st.button(
-        "🚪 Logout",
-        key="settings_logout",
-        use_container_width=True
-    ):
-
-        st.session_state.logged_in = False
-        st.session_state.username = ""
-
-        st.rerun()
