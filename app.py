@@ -537,7 +537,32 @@ else:
 
 # ====================================================
 # SIDEBAR
+# # ====================================================
+# SIDEBAR
 # ====================================================
+
+navigation_options = [
+    "Home",
+    "URL",
+    "QR Code",
+    "Document",
+    "Image",
+    "History",
+    "Analytics",
+    "AI Assistant",
+    "Settings"
+]
+
+if (
+    "home_navigation" in st.session_state
+    and st.session_state.home_navigation in navigation_options
+):
+    default_index = navigation_options.index(
+        st.session_state.home_navigation
+    )
+else:
+    default_index = 0
+
 
 with st.sidebar:
 
@@ -547,10 +572,6 @@ with st.sidebar:
     )
 
     st.title("Veritas")
-
-    # ====================================================
-    # OPTION MENU
-    # ====================================================
 
     selected = option_menu(
         menu_title="Navigation",
@@ -610,19 +631,9 @@ with st.sidebar:
         f"👤 Logged in as: **{st.session_state.username}**"
     )
 
-
-# ====================================================
-# CLEAR TEMPORARY HOME NAVIGATION
-# ====================================================
-
-st.session_state.home_navigation = None
-
-    # -----------------------------
-    # USER INFORMATION
-    # -----------------------------   
-    # -----------------------------
+    # ====================================================
     # LOGOUT
-    # -----------------------------
+    # ====================================================
 
     if st.button(
         "🚪 Logout",
@@ -631,20 +642,29 @@ st.session_state.home_navigation = None
 
         st.session_state.logged_in = False
         st.session_state.username = ""
+        st.session_state.home_navigation = None
 
         st.rerun()
 
 
+# ====================================================
+# CLEAR TEMPORARY HOME NAVIGATION
+# ====================================================
+
+# IMPORTANT:
+# Do NOT put this before the elif navigation chain.
+#
+# We clear it after determining the selected page.
+
+if "home_navigation" in st.session_state:
+    st.session_state.home_navigation = None
+
 
 # ====================================================
 # HOME DASHBOARD
 # ====================================================
 
-# ====================================================
-# HOME DASHBOARD
-# ====================================================
-
-elif selected == "Home":
+if selected == "Home":
 
     st.title("🛡️ Veritas AI")
 
@@ -658,15 +678,7 @@ elif selected == "Home":
 
     st.divider()
 
-    # ====================================================
-    # QUICK VERIFICATION
-    # ====================================================
-
     st.subheader("🚀 Quick Verification")
-
-    st.write(
-        "Choose what you want to verify:"
-    )
 
     col1, col2, col3, col4 = st.columns(4)
 
