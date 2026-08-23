@@ -907,7 +907,7 @@ security results and help users understand potential threats.
 # ====================================================
 # IMAGE VERIFICATION
 # ====================================================
-# ====================================================
+# ===================================
 # ====================================================
 # IMAGE VERIFICATION
 # ====================================================
@@ -985,11 +985,8 @@ elif selected == "Image":
                         f"🔐 Verification ID: **{verification_id}**"
                     )
 
-                except Exception as e:
+                    st.divider()
 
-                    st.error(
-                        f"❌ Image analysis error: {e}"
-                    )
                     # ====================================================
                     # IMAGE PREVIEW + INFORMATION
                     # ====================================================
@@ -1094,41 +1091,8 @@ elif selected == "Image":
                             "✅ No suspicious indicators were detected."
                         )
 
-                except Exception as e:
+                    st.divider()
 
-                    st.error(
-                        f"❌ Image analysis error: {e}"
-                    )
-
-
-                    # ====================================================
-                    # SECURITY ANALYSIS
-                    # ====================================================
-
-                    st.subheader(
-                        "🔍 Security Analysis"
-                    )
-
-                    if not reasons:
-
-                        st.success(
-                            "✅ No suspicious indicators were detected."
-                        )
-
-                    else:
-
-                        for reason in reasons:
-
-                            st.write(
-                                "⚠️",
-                                reason
-                            )
-
-                except Exception as e:
-
-                    st.error(
-                        f"❌ Image analysis error: {e}"
-                    )
                     # ====================================================
                     # AI VERDICT
                     # ====================================================
@@ -1148,14 +1112,16 @@ elif selected == "Image":
                             recommendation
                         )
 
-                    except Exception as e:
+                    except Exception:
 
                         st.info(
                             "Review the image carefully before trusting it."
                         )
 
+                    st.divider()
+
                     # ====================================================
-                    # PDF REPORT
+                    # PDF VERIFICATION REPORT
                     # ====================================================
 
                     st.subheader(
@@ -1164,36 +1130,41 @@ elif selected == "Image":
 
                     try:
 
-                        report = generate_report(
+                        report_path = generate_report(
                             "Image",
                             uploaded_image.name,
                             score,
                             status,
-                            reasons,
-                            verification_id
+                            reasons
                         )
 
-                        with open(report, "rb") as pdf:
+                        with open(
+                            report_path,
+                            "rb"
+                        ) as pdf_file:
 
                             st.download_button(
-                                "📥 Download PDF Report",
-                                pdf,
+                                label="📥 Download PDF Report",
+                                data=pdf_file,
                                 file_name="Veritas_Image_Report.pdf",
                                 mime="application/pdf",
+                                use_container_width=True,
                                 key="image_report_download"
                             )
 
-                    except Exception as e:
+                    except Exception as report_error:
 
                         st.warning(
-                            f"Report generation unavailable: {e}"
+                            f"⚠️ Report generation unavailable: {report_error}"
                         )
 
                 except Exception as e:
 
                     st.error(
-                        f"Image analysis error: {e}"
+                        f"❌ Image analysis error: {e}"
                     )
+
+
                     # ====================================================
 # ====================================================
 # URL
