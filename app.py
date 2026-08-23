@@ -947,20 +947,19 @@ if selected == "Image":
     # ANALYZE IMAGE
     # ====================================================
 
-    elif st.button(
-        "🔍 Analyze Image",
-        key="analyze_image_button",
-        use_container_width=True
-    ):
+if st.button(
+    "🔍 Analyze Image",
+    key="analyze_image_button",
+    use_container_width=True
+):
 
-        if uploaded_image is None:
+    if uploaded_image is None:
 
-            st.warning(
-                "Please upload an image."
-            )
+        st.warning(
+            "Please upload an image."
+        )
 
-        else:
-
+    else:
             with st.spinner(
                 "🖼️ Analyzing image..."
             ):
