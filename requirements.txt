@@ -8,3 +8,4 @@ requests
 qrcode
 PyPDF2
 reportlab
+ollama
