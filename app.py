@@ -636,62 +636,6 @@ if selected == "Home":
 
 
     # ====================================================
-    # QUICK VERIFICATION
-    # ====================================================
-
-    st.subheader("🚀 Quick Verification")
-
-    col1, col2, col3, col4 = st.columns(4)
-
-
-    with col1:
-
-        st.button(
-            "🌐 URL",
-            use_container_width=True,
-            key="home_url_button",
-            on_click=go_to_page,
-            args=("URL",)
-        )
-
-
-    with col2:
-
-        st.button(
-            "📱 QR Code",
-            use_container_width=True,
-            key="home_qr_button",
-            on_click=go_to_page,
-            args=("QR Code",)
-        )
-
-
-    with col3:
-
-        st.button(
-            "📄 Document",
-            use_container_width=True,
-            key="home_document_button",
-            on_click=go_to_page,
-            args=("Document",)
-        )
-
-
-    with col4:
-
-        st.button(
-            "🖼️ Image",
-            use_container_width=True,
-            key="home_image_button",
-            on_click=go_to_page,
-            args=("Image",)
-        )
-
-
-    st.divider()
-
-
-    # ====================================================
     # SECURITY OVERVIEW
     # ====================================================
 
