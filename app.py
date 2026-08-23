@@ -1928,22 +1928,20 @@ elif selected == "Analytics":
     # GET STATISTICS
     # ====================================================
 
-stats = get_statistics(
-    st.session_state.username
-)
+    stats = get_statistics(
+        st.session_state.username
+    )
 
-st.write("DEBUG:", stats)
+    total = stats["total"]
+    safe = stats["safe"]
+    suspicious = stats["suspicious"]
+    dangerous = stats["dangerous"]
 
-total = stats["total"]
-safe = stats["safe"]
-suspicious = stats["suspicious"]
-dangerous = stats["dangerous"]
     # ====================================================
     # DASHBOARD CARDS
     # ====================================================
 
     col1, col2, col3, col4 = st.columns(4)
-
 
     with col1:
 
@@ -1983,13 +1981,7 @@ dangerous = stats["dangerous"]
         "🔍 Verification Distribution"
     )
 
-    if total == 0:
-
-        st.info(
-            "No verification data available yet."
-        )
-
-    else:
+    if total > 0:
 
         fig = go.Figure(
             data=[
@@ -2010,7 +2002,8 @@ dangerous = stats["dangerous"]
         )
 
         fig.update_layout(
-            title="Scan Result Distribution"
+            title="Scan Result Distribution",
+            height=450
         )
 
         st.plotly_chart(
@@ -2018,49 +2011,68 @@ dangerous = stats["dangerous"]
             use_container_width=True
         )
 
+    else:
+
+        st.info(
+            "No verification data available yet."
+        )
+
     st.divider()
-        # SCAN ACTIVITY
+
+    # ====================================================
+    # SCAN ACTIVITY
     # ====================================================
 
     st.subheader(
         "📈 Scan Activity"
     )
 
-    activity_fig = go.Figure()
+    if total > 0:
 
-    activity_fig.add_trace(
-        go.Bar(
-            x=[
-                "Safe",
-                "Suspicious",
-                "Dangerous"
-            ],
-            y=[
-                safe,
-                suspicious,
-                dangerous
-            ],
-            text=[
-                safe,
-                suspicious,
-                dangerous
-            ],
-            textposition="auto"
+        activity_fig = go.Figure()
+
+        activity_fig.add_trace(
+            go.Bar(
+                x=[
+                    "Safe",
+                    "Suspicious",
+                    "Dangerous"
+                ],
+                y=[
+                    safe,
+                    suspicious,
+                    dangerous
+                ],
+                text=[
+                    safe,
+                    suspicious,
+                    dangerous
+                ],
+                textposition="auto"
+            )
         )
-    )
 
-    activity_fig.update_layout(
-        title="Verification Results",
-        xaxis_title="Risk Level",
-        yaxis_title="Number of Scans",
-        height=400,
-        showlegend=False
-    )
+        activity_fig.update_layout(
+            title="Verification Results",
+            xaxis_title="Risk Level",
+            yaxis_title="Number of Scans",
+            height=400,
+            showlegend=False
+        )
 
-    st.plotly_chart(
-        activity_fig,
-        use_container_width=True
-    )
+        st.plotly_chart(
+            activity_fig,
+            use_container_width=True
+        )
+
+    else:
+
+        st.info(
+            "Complete some scans to generate "
+            "scan activity."
+        )
+
+    st.divider()
 
     # ====================================================
     # SECURITY SUMMARY
@@ -2085,8 +2097,7 @@ dangerous = stats["dangerous"]
         ) * 100
 
         st.write(
-            f"🟢 Safe: "
-            f"**{safe_percentage:.1f}%**"
+            f"🟢 Safe: **{safe_percentage:.1f}%**"
         )
 
         st.progress(
@@ -2094,8 +2105,7 @@ dangerous = stats["dangerous"]
         )
 
         st.write(
-            f"🟡 Suspicious: "
-            f"**{suspicious_percentage:.1f}%**"
+            f"🟡 Suspicious: **{suspicious_percentage:.1f}%**"
         )
 
         st.progress(
@@ -2103,8 +2113,7 @@ dangerous = stats["dangerous"]
         )
 
         st.write(
-            f"🔴 Dangerous: "
-            f"**{dangerous_percentage:.1f}%**"
+            f"🔴 Dangerous: **{dangerous_percentage:.1f}%**"
         )
 
         st.progress(
@@ -2117,7 +2126,7 @@ dangerous = stats["dangerous"]
             "Complete some scans to generate "
             "security analytics."
         )
-
+        
 
 # ====================================================
 # AI ASSISTANT
