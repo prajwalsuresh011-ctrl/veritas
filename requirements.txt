@@ -1,0 +1,8 @@
+streamlit
+streamlit-option-menu
+pandas
+numpy
+opencv-python-headless
+Pillow
+requests
+qrcode
