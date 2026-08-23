@@ -1,12 +1,28 @@
+# ====================================================
+# VERITAS AI
+# IMPORTS
+# ====================================================
+
 import streamlit as st
 from pathlib import Path
 
 from streamlit_option_menu import option_menu
+import plotly.graph_objects as go
+
+
+# ====================================================
+# VERITAS MODULES
+# ====================================================
 
 from url_checker import analyze_url
 from image_checker import analyze_image
 from document_checker import analyze_document
 from qr_checker import read_qr
+
+
+# ====================================================
+# DATABASE
+# ====================================================
 
 from database import (
     save_scan,
@@ -16,32 +32,50 @@ from database import (
     get_scan_by_verification_id
 )
 
+
+# ====================================================
+# REPORT & AI
+# ====================================================
+
 from report_generator import generate_report
 from ai_summary import ai_summary
 from risk_analyzer import analyze_risk
 from ai_recommendation import generate_recommendation
 
-from auth import register_user, login_user
-from chatbot import ask_veritas
 
-import plotly.graph_objects as go
+# ====================================================
+# AUTHENTICATION
+# ====================================================
+
+from auth import register_user, login_user
+
+
+# ====================================================
+# AI ASSISTANT
+# ====================================================
+
+from chatbot import ask_veritas
 
 
 # ====================================================
 # FILE PATHS
 # ====================================================
 
-from pathlib import Path
-
 BASE_DIR = Path(__file__).resolve().parent
+
 LOGO_PATH = BASE_DIR / "veritas_logo.png"
-# Page Config
-# =========================
+
+
+# ====================================================
+# PAGE CONFIGURATION
+# ====================================================
+
 st.set_page_config(
     page_title="Veritas",
     page_icon="🛡️",
     layout="wide"
 )
+
 
 # ====================================================
 # # ====================================================
