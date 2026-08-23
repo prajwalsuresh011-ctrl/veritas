@@ -1928,15 +1928,16 @@ elif selected == "Analytics":
     # GET STATISTICS
     # ====================================================
 
-    stats = get_statistics(
-        st.session_state.username
-    )
+stats = get_statistics(
+    st.session_state.username
+)
 
-    total = stats["total"]
-    safe = stats["safe"]
-    suspicious = stats["suspicious"]
-    dangerous = stats["dangerous"]
+st.write("DEBUG:", stats)
 
+total = stats["total"]
+safe = stats["safe"]
+suspicious = stats["suspicious"]
+dangerous = stats["dangerous"]
     # ====================================================
     # DASHBOARD CARDS
     # ====================================================
