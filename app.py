@@ -1557,12 +1557,16 @@ elif selected == "QR Code":
 
                         
                         verification_id = save_scan(
-                        st.session_state.username,
-                        "QR Code",
-                         qr_data,
-                           score,
-                          status
-                     )
+    st.session_state.username,
+    "QR Code",
+    url,
+    score,
+    status
+)
+
+                        st.info(
+    f"🆔 Verification ID: `{verification_id}`"
+)
                          # ====================================================
                         # TRUST SCORE
                         # ====================================================
