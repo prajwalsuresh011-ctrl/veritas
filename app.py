@@ -12,7 +12,8 @@ from database import (
     save_scan,
     get_history,
     clear_history,
-    get_statistics
+    get_statistics,
+    get_scan_by_verification_id
 )
 
 from report_generator import generate_report
@@ -487,22 +488,24 @@ with st.sidebar:
             "Document",
             "Image",
             "History",
+            "Verify ID",
             "Analytics",
             "AI Assistant",
             "Settings"
         ],
 
         icons=[
-            "house-fill",
-            "globe2",
-            "qr-code",
-            "file-earmark-text",
-            "image",
-            "clock-history",
-            "bar-chart-fill",
-            "robot",
-            "gear-fill"
-        ],
+    "house-fill",
+    "globe2",
+    "qr-code",
+    "file-earmark-text",
+    "image",
+    "clock-history",
+    "shield-check",
+    "bar-chart-fill",
+    "robot",
+    "gear-fill"
+],
 
         menu_icon="shield-lock",
         default_index=0,
@@ -1054,13 +1057,13 @@ elif selected == "URL":
                         risk_data
                     )
 
-                    save_scan(
-                        st.session_state.username,
-                        "URL",
-                        url,
-                        score,
-                        status
-                    )
+                    verification_id = save_scan(
+                    st.session_state.username,
+                    "URL",
+                    url,
+                    score,
+                     status
+                   ) 
 
                     st.success(
                         "URL analysis completed."
@@ -1912,7 +1915,177 @@ elif selected == "History":
 # ====================================================
 # ANALYTICS
 # ====================================================
+# ====================================================
+# VERIFICATION ID
+# ====================================================
 
+elif selected == "Verify ID":
+
+    st.title("🛡️ Verify Verification ID")
+
+    st.write(
+        "Enter a Veritas Verification ID to retrieve "
+        "the corresponding security verification result."
+    )
+
+    st.divider()
+
+    verification_id = st.text_input(
+        "🔎 Verification ID",
+        placeholder="VERITAS-2026-XXXXXXXX"
+    )
+
+    if st.button(
+        "🔍 Verify ID",
+        use_container_width=True
+    ):
+
+        if verification_id.strip() == "":
+
+            st.warning(
+                "Please enter a Verification ID."
+            )
+
+        else:
+
+            verification_id = (
+                verification_id.strip().upper()
+            )
+
+            result = get_scan_by_verification_id(
+                verification_id,
+                st.session_state.username
+            )
+
+            if result:
+
+                (
+                    scan_id,
+                    verification_id,
+                    username,
+                    scan_type,
+                    target,
+                    score,
+                    status,
+                    date
+                ) = result
+
+                st.success(
+                    "✅ Verification ID found."
+                )
+
+                st.divider()
+
+                # ====================================================
+                # VERIFICATION INFORMATION
+                # ====================================================
+
+                st.subheader(
+                    "📋 Verification Information"
+                )
+
+                col1, col2 = st.columns(2)
+
+                with col1:
+
+                    st.metric(
+                        "🆔 Verification ID",
+                        verification_id
+                    )
+
+                    st.write(
+                        f"**Verification Type:** {scan_type}"
+                    )
+
+                    st.write(
+                        f"**Date:** {date}"
+                    )
+
+                with col2:
+
+                    st.metric(
+                        "🛡️ Trust Score",
+                        f"{score}/100"
+                    )
+
+                    if status == "SAFE":
+
+                        st.success(
+                            "🟢 SAFE"
+                        )
+
+                    elif status == "SUSPICIOUS":
+
+                        st.warning(
+                            "🟡 SUSPICIOUS"
+                        )
+
+                    else:
+
+                        st.error(
+                            "🔴 DANGEROUS"
+                        )
+
+                st.divider()
+
+                # ====================================================
+                # TARGET
+                # ====================================================
+
+                st.subheader(
+                    "🎯 Verified Target"
+                )
+
+                st.code(
+                    target
+                )
+
+                st.divider()
+
+                # ====================================================
+                # RESULT
+                # ====================================================
+
+                st.subheader(
+                    "🔐 Verification Result"
+                )
+
+                if status == "SAFE":
+
+                    st.success(
+                        "This verification record was classified as SAFE "
+                        "by Veritas."
+                    )
+
+                elif status == "SUSPICIOUS":
+
+                    st.warning(
+                        "This verification record was classified as "
+                        "SUSPICIOUS by Veritas."
+                    )
+
+                else:
+
+                    st.error(
+                        "This verification record was classified as "
+                        "DANGEROUS by Veritas."
+                    )
+
+                st.info(
+                    "⚠️ A Veritas verification result is based on "
+                    "the security checks available at the time of scanning. "
+                    "It does not guarantee that a target is completely safe."
+                )
+
+            else:
+
+                st.error(
+                    "❌ Verification ID not found."
+                )
+
+                st.write(
+                    "Please check the ID and try again."
+                )
 elif selected == "Analytics":
 
     st.title("📊 Security Analytics")
