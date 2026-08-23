@@ -519,8 +519,8 @@ with st.sidebar:
                 "background-color": "#00C853",
                 "color": "white"
             }
-        }
-    )
+        
+    
 
     st.divider()
 
