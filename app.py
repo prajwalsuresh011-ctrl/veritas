@@ -470,7 +470,31 @@ if not st.session_state.logged_in:
 # ====================================================
 # SIDEBAR
 # ====================================================
+# ====================================================
+# NAVIGATION OPTIONS
+# ====================================================
 
+navigation_options = [
+    "Home",
+    "URL",
+    "QR Code",
+    "Document",
+    "Image",
+    "History",
+    "Analytics",
+    "AI Assistant",
+    "Settings"
+]
+
+# ====================================================
+# SELECTED PAGE
+# ====================================================
+
+if "selected_page" not in st.session_state:
+    st.session_state.selected_page = "Home"
+
+if st.session_state.selected_page not in navigation_options:
+    st.session_state.selected_page = "Home"
 with st.sidebar:
 
     st.image(
@@ -584,55 +608,56 @@ if selected == "Home":
     # QUICK VERIFICATION
     # ====================================================
 
-    st.subheader("🚀 Quick Verification")
+   # ====================================================
+# QUICK VERIFICATION
+# ====================================================
 
-    col1, col2, col3, col4 = st.columns(4)
+st.subheader("🚀 Quick Verification")
 
-    with col1:
+col1, col2, col3, col4 = st.columns(4)
 
-        if st.button(
-            "🌐 URL",
-            use_container_width=True,
-            key="home_url_button"
-        ):
+with col1:
 
-            st.session_state.selected_page = "URL"
-            st.rerun()
+    if st.button(
+        "🌐 URL",
+        use_container_width=True,
+        key="home_url_button"
+    ):
+        st.session_state.selected_page = "URL"
+        st.rerun()
 
-    with col2:
 
-        if st.button(
-            "📱 QR Code",
-            use_container_width=True,
-            key="home_qr_button"
-        ):
+with col2:
 
-            st.session_state.selected_page = "QR Code"
-            st.rerun()
+    if st.button(
+        "📱 QR Code",
+        use_container_width=True,
+        key="home_qr_button"
+    ):
+        st.session_state.selected_page = "QR Code"
+        st.rerun()
 
-    with col3:
 
-        if st.button(
-            "📄 Document",
-            use_container_width=True,
-            key="home_document_button"
-        ):
+with col3:
 
-            st.session_state.selected_page = "Document"
-            st.rerun()
+    if st.button(
+        "📄 Document",
+        use_container_width=True,
+        key="home_document_button"
+    ):
+        st.session_state.selected_page = "Document"
+        st.rerun()
 
-    with col4:
 
-        if st.button(
-            "🖼️ Image",
-            use_container_width=True,
-            key="home_image_button"
-        ):
+with col4:
 
-            st.session_state.selected_page = "Image"
-            st.rerun()
-
-    st.divider()
+    if st.button(
+        "🖼️ Image",
+        use_container_width=True,
+        key="home_image_button"
+    ):
+        st.session_state.selected_page = "Image"
+        st.rerun()
 
     # ====================================================
     # SECURITY OVERVIEW
