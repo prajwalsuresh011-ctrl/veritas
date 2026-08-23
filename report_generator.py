@@ -15,6 +15,7 @@ from reportlab.lib.units import mm
 from datetime import datetime
 import os
 import html
+import uuid
 
 
 def generate_report(
@@ -32,6 +33,24 @@ def generate_report(
     os.makedirs(
         "reports",
         exist_ok=True
+    )
+
+    # ====================================================
+    # VERIFICATION ID
+    # ====================================================
+
+    verification_id = (
+        "VERITAS-"
+        f"{datetime.now().year}-"
+        f"{uuid.uuid4().hex[:8].upper()}"
+    )
+
+    # ====================================================
+    # DATE
+    # ====================================================
+
+    verification_date = datetime.now().strftime(
+        "%d-%m-%Y %H:%M:%S"
     )
 
     # ====================================================
@@ -111,6 +130,15 @@ def generate_report(
         leading=14
     )
 
+    verification_id_style = ParagraphStyle(
+        "VerificationID",
+        parent=styles["BodyText"],
+        alignment=TA_CENTER,
+        fontSize=11,
+        leading=15,
+        spaceAfter=15
+    )
+
     # ====================================================
     # STORY
     # ====================================================
@@ -123,7 +151,7 @@ def generate_report(
 
     elements.append(
         Paragraph(
-            "🛡️ VERITAS AI",
+            "VERITAS AI",
             title_style
         )
     )
@@ -132,6 +160,18 @@ def generate_report(
         Paragraph(
             "AI-Powered Digital Verification Report",
             subtitle_style
+        )
+    )
+
+    # ====================================================
+    # VERIFICATION ID
+    # ====================================================
+
+    elements.append(
+        Paragraph(
+            f"<b>Verification ID</b><br/>"
+            f"{verification_id}",
+            verification_id_style
         )
     )
 
@@ -148,7 +188,7 @@ def generate_report(
 
     elements.append(
         Paragraph(
-            "🔍 Verification Information",
+            "Verification Information",
             heading_style
         )
     )
@@ -159,39 +199,62 @@ def generate_report(
 
     info_data = [
         [
-            Paragraph("<b>Verification Type</b>", body_style),
+            Paragraph(
+                "<b>Verification ID</b>",
+                body_style
+            ),
+            Paragraph(
+                verification_id,
+                body_style
+            )
+        ],
+        [
+            Paragraph(
+                "<b>Verification Type</b>",
+                body_style
+            ),
             Paragraph(
                 html.escape(str(scan_type)),
                 body_style
             )
         ],
         [
-            Paragraph("<b>Target</b>", body_style),
+            Paragraph(
+                "<b>Target</b>",
+                body_style
+            ),
             Paragraph(
                 safe_target,
                 body_style
             )
         ],
         [
-            Paragraph("<b>Trust Score</b>", body_style),
+            Paragraph(
+                "<b>Trust Score</b>",
+                body_style
+            ),
             Paragraph(
                 f"<b>{score}/100</b>",
                 body_style
             )
         ],
         [
-            Paragraph("<b>Status</b>", body_style),
+            Paragraph(
+                "<b>Status</b>",
+                body_style
+            ),
             Paragraph(
                 html.escape(str(status)),
                 body_style
             )
         ],
         [
-            Paragraph("<b>Date</b>", body_style),
             Paragraph(
-                datetime.now().strftime(
-                    "%d-%m-%Y %H:%M:%S"
-                ),
+                "<b>Date</b>",
+                body_style
+            ),
+            Paragraph(
+                verification_date,
                 body_style
             )
         ]
@@ -264,12 +327,11 @@ def generate_report(
 
     elements.append(
         Paragraph(
-            "🔍 Security Analysis",
+            "Security Analysis",
             heading_style
         )
     )
 
-    # Make sure reasons are never empty
     if not reasons:
 
         reasons = [
@@ -296,7 +358,7 @@ def generate_report(
 
     elements.append(
         Paragraph(
-            "🧠 Verification Verdict",
+            "Verification Verdict",
             heading_style
         )
     )
@@ -332,7 +394,7 @@ def generate_report(
     )
 
     # ====================================================
-    # FOOTER INFORMATION
+    # FOOTER
     # ====================================================
 
     elements.append(
