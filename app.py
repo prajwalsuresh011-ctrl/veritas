@@ -471,7 +471,6 @@ if not st.session_state.logged_in:
 # # # ====================================================
 # SIDEBAR
 # ====================================================
-
 navigation_options = [
     "Home",
     "URL",
@@ -479,6 +478,7 @@ navigation_options = [
     "Document",
     "Image",
     "History",
+    "Verify ID",
     "Analytics",
     "AI Assistant",
     "Settings"
@@ -529,18 +529,18 @@ with st.sidebar:
         menu_title="Navigation",
 
         options=navigation_options,
-
-        icons=[
-            "house-fill",
-            "globe2",
-            "qr-code",
-            "file-earmark-text",
-            "image",
-            "clock-history",
-            "bar-chart-fill",
-            "robot",
-            "gear-fill"
-        ],
+icons=[
+    "house-fill",
+    "globe2",
+    "qr-code",
+    "file-earmark-text",
+    "image",
+    "clock-history",
+    "patch-check-fill",
+    "bar-chart-fill",
+    "robot",
+    "gear-fill"
+]
 
         menu_icon="shield-lock",
 
@@ -2219,22 +2219,6 @@ elif selected == "History":
             )
 
             st.rerun()
-# ====================================================
-# # ====================================================
-# AI ASSISTANT
-# ====================================================
-
-# ANALYTICS
-# ====================================================
-
-# ====================================================
-# ANALYTICS
-# ====================================================
-
-# ====================================================
-# ANALYTICS
-# ====================================================
-# ====================================================
 # VERIFICATION ID
 # ====================================================
 
