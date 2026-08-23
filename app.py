@@ -947,7 +947,7 @@ if selected == "Image":
     # ANALYZE IMAGE
     # ====================================================
 
-    if st.button(
+    elif st.button(
         "🔍 Analyze Image",
         key="analyze_image_button",
         use_container_width=True
