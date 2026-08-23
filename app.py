@@ -911,7 +911,7 @@ security results and help users understand potential threats.
 # IMAGE VERIFICATION
 # ====================================================
 
-if selected == "Image":
+elif selected == "Image":
 
     st.title("🖼️ Image Verification")
 
