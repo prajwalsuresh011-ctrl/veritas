@@ -822,12 +822,12 @@ elif selected == "Image":
                     # SAVE HISTORY
                     # ====================================================
 
-                    save_scan(
-                        st.session_state.username,
-                        "Image",
-                        uploaded_image.name,
-                        score,
-                        status
+                    verification_id = save_scan(
+                    st.session_state.username,
+                    "Image",
+                    uploaded_image.name,
+                    score,
+                     status
                     )
 
                     st.success(
@@ -1335,19 +1335,15 @@ elif selected == "QR Code":
                                 url
                             )
 
-                        # ====================================================
-                        # SAVE HISTORY
-                        # ====================================================
-
-                        save_scan(
-                            st.session_state.username,
-                            "QR Code",
-                            url,
-                            score,
-                            status
-                        )
-
-                        # ====================================================
+                        
+                        verification_id = save_scan(
+                        st.session_state.username,
+                        "QR Code",
+                         qr_data,
+                           score,
+                          status
+                     )
+                         # ====================================================
                         # TRUST SCORE
                         # ====================================================
 
@@ -1530,14 +1526,14 @@ elif selected == "Document":
                     # SAVE HISTORY
                     # ====================================================
 
-                    save_scan(
-                        st.session_state.username,
-                        "Document",
-                        uploaded.name,
-                        score,
-                        status
-                    )
-
+                    report = generate_report(
+                      "Document",
+                      uploaded_document.name,
+                       score,
+                         status,
+                        reasons,
+                            verification_id
+                       )
                     st.success(
                         "✅ Document analysis completed."
                     )
