@@ -504,6 +504,36 @@ if "selected_page" not in st.session_state:
 # ====================================================
 # SIDEBAR
 # ====================================================
+# NAVIGATION OPTIONS
+# ====================================================
+
+navigation_options = [
+    "Home",
+    "URL",
+    "QR Code",
+    "Document",
+    "Image",
+    "History",
+    "Analytics",
+    "AI Assistant",
+    "Settings"
+]
+
+
+# ====================================================
+# SELECTED PAGE
+# ====================================================
+
+if "selected_page" not in st.session_state:
+    st.session_state.selected_page = "Home"
+
+if st.session_state.selected_page not in navigation_options:
+    st.session_state.selected_page = "Home"
+
+
+# ====================================================
+# SIDEBAR
+# ====================================================
 
 with st.sidebar:
 
@@ -533,7 +563,9 @@ with st.sidebar:
 
         menu_icon="shield-lock",
 
-        default_index=default_index,
+        default_index=navigation_options.index(
+            st.session_state.selected_page
+        ),
 
         orientation="vertical",
 
@@ -562,11 +594,22 @@ with st.sidebar:
         }
     )
 
+    # Save selected page
+    st.session_state.selected_page = selected
+
     st.divider()
+
+    # ====================================================
+    # USER INFORMATION
+    # ====================================================
 
     st.write(
         f"👤 Logged in as: **{st.session_state.username}**"
     )
+
+    # ====================================================
+    # LOGOUT
+    # ====================================================
 
     if st.button(
         "🚪 Logout",
@@ -575,15 +618,13 @@ with st.sidebar:
 
         st.session_state.logged_in = False
         st.session_state.username = ""
-        st.session_state.home_navigation = None
+        st.session_state.selected_page = "Home"
 
         st.rerun()
-
 # ====================================================
 # CLEAR TEMPORARY HOME NAVIGATION
 # ====================================================
 
-st.session_state.home_navigation = None
 
 
 
