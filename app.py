@@ -908,6 +908,7 @@ security results and help users understand potential threats.
 # IMAGE VERIFICATION
 # ====================================================
 # ====================================================
+# ====================================================
 # IMAGE VERIFICATION
 # ====================================================
 
@@ -936,19 +937,20 @@ elif selected == "Image":
     # ANALYZE IMAGE
     # ====================================================
 
-if st.button(
-    "🔍 Analyze Image",
-    key="analyze_image_button",
-    use_container_width=True
-):
+    if st.button(
+        "🔍 Analyze Image",
+        key="analyze_image_button",
+        use_container_width=True
+    ):
 
-    if uploaded_image is None:
+        if uploaded_image is None:
 
-        st.warning(
-            "Please upload an image."
-        )
+            st.warning(
+                "Please upload an image."
+            )
 
-    else:
+        else:
+
             with st.spinner(
                 "🖼️ Analyzing image..."
             ):
@@ -983,8 +985,11 @@ if st.button(
                         f"🔐 Verification ID: **{verification_id}**"
                     )
 
-                    st.divider()
+                except Exception as e:
 
+                    st.error(
+                        f"❌ Image analysis error: {e}"
+                    )
                     # ====================================================
                     # IMAGE PREVIEW + INFORMATION
                     # ====================================================
