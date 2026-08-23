@@ -464,59 +464,88 @@ with st.sidebar:
     st.title("Veritas")
 
     selected = option_menu(
-        menu_title="Navigation",
+    menu_title="Navigation",
+    options=[
+        "Home",
+        "URL",
+        "QR Code",
+        "Document",
+        "Image",
+        "History",
+        "Analytics",
+        "AI Assistant",
+        "Settings"
+    ],
+    icons=[
+        "house-fill",
+        "globe2",
+        "qr-code",
+        "file-earmark-text",
+        "image",
+        "clock-history",
+        "bar-chart-fill",
+        "robot",
+        "gear-fill"
+    ],
+    menu_icon="shield-lock",
+    default_index=0,
+    orientation="vertical"
+)
+        selected = option_menu(
+    menu_title="Navigation",
 
-        options=[
-            "Home",
-            "URL",
-            "QR Code",
-            "Document",
-            "Image",
-            "History",
-            "Analytics",
-            "AI Assistant",
-            "Settings"
-        ],
+    options=[
+        "Home",
+        "URL",
+        "QR Code",
+        "Document",
+        "Image",
+        "History",
+        "Analytics",
+        "AI Assistant",
+        "Settings"
+    ],
 
-        icons=[
-            "house-fill",
-            "globe2",
-            "qr-code",
-            "file-earmark-text",
-            "image",
-            "clock-history",
-            "bar-chart-fill",
-            "robot",
-            "gear-fill"
-        ],
+    icons=[
+        "house-fill",
+        "globe2",
+        "qr-code",
+        "file-earmark-text",
+        "image",
+        "clock-history",
+        "bar-chart-fill",
+        "robot",
+        "gear-fill"
+    ],
 
-        menu_icon="shield-lock",
-        default_index=0,
-orientation="vertical",
-    )
-        styles={
-            "container": {
-                "padding": "5px"
-            },
+    menu_icon="shield-lock",
+    default_index=0,
+    orientation="vertical",
 
-            "icon": {
-                "color": "#00C853",
-                "font-size": "18px"
-            },
+    styles={
+        "container": {
+            "padding": "5px"
+        },
 
-            "nav-link": {
-                "font-size": "15px",
-                "text-align": "left",
-                "margin": "5px",
-                "padding": "10px",
-                "border-radius": "8px"
-            },
+        "icon": {
+            "color": "#00C853",
+            "font-size": "18px"
+        },
 
-            "nav-link-selected": {
-                "background-color": "#00C853",
-                "color": "white"
-            }
-        
+        "nav-link": {
+            "font-size": "15px",
+            "text-align": "left",
+            "margin": "5px",
+            "padding": "10px",
+            "border-radius": "8px"
+        },
+
+        "nav-link-selected": {
+            "background-color": "#00C853",
+            "color": "white"
+        }
+    }
+)
     
 
     st.divider()
