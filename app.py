@@ -470,7 +470,10 @@ if not st.session_state.logged_in:
 # ====================================================
 # # # ====================================================
 # SIDEBAR
+# # ====================================================
+# SIDEBAR NAVIGATION
 # ====================================================
+
 navigation_options = [
     "Home",
     "URL",
@@ -484,12 +487,6 @@ navigation_options = [
     "Settings"
 ]
 
-
-# ====================================================
-# HOME NAVIGATION
-# ====================================================
-if "home_navigation" in st.session_state:
-    st.session_state.home_navigation = None
 # ====================================================
 # HOME NAVIGATION
 # ====================================================
@@ -525,22 +522,22 @@ with st.sidebar:
     st.title("Veritas")
 
     selected = option_menu(
-
         menu_title="Navigation",
 
         options=navigation_options,
-icons=[
-    "house-fill",
-    "globe2",
-    "qr-code",
-    "file-earmark-text",
-    "image",
-    "clock-history",
-    "patch-check-fill",
-    "bar-chart-fill",
-    "robot",
-    "gear-fill"
-]
+
+        icons=[
+            "house-fill",
+            "globe2",
+            "qr-code",
+            "file-earmark-text",
+            "image",
+            "clock-history",
+            "patch-check-fill",
+            "bar-chart-fill",
+            "robot",
+            "gear-fill"
+        ],
 
         menu_icon="shield-lock",
 
@@ -575,9 +572,17 @@ icons=[
 
     st.divider()
 
+    # ====================================================
+    # USER INFORMATION
+    # ====================================================
+
     st.write(
         f"👤 Logged in as: **{st.session_state.username}**"
     )
+
+    # ====================================================
+    # LOGOUT
+    # ====================================================
 
     if st.button(
         "🚪 Logout",
@@ -586,10 +591,16 @@ icons=[
 
         st.session_state.logged_in = False
         st.session_state.username = ""
-
         st.session_state.home_navigation = None
 
         st.rerun()
+
+
+# ====================================================
+# CLEAR TEMPORARY HOME NAVIGATION
+# ====================================================
+
+st.session_state.home_navigation = None
 
 
 
