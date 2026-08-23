@@ -963,33 +963,7 @@ security results and help users understand potential threats.
     )
 
 
-# ====================================================
-# URL VERIFICATION
-# ====================================================
 
-elif selected == "URL":
-
-    # YOUR EXISTING URL CODE HERE
-
-
-
-elif selected == "QR Code":
-
-    # YOUR EXISTING QR CODE CODE HERE
-
-
-
-
-elif selected == "Document":
-
-    # YOUR EXISTING DOCUMENT CODE HERE
-
-
-elif selected == "Image":
-
-    st.title("🖼️ Image Verification")
-
-    # YOUR EXISTING IMAGE CODE HERE
 # ====================================================
 # I# ====================================================
 # IMAGE VERIFICATION
