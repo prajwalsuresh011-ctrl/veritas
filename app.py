@@ -1,4 +1,6 @@
 import streamlit as st
+from pathlib import Path
+
 from streamlit_option_menu import option_menu
 
 from url_checker import analyze_url
@@ -23,12 +25,13 @@ from chatbot import ask_veritas
 
 import plotly.graph_objects as go
 
-#FILE PATHS
+
+# ====================================================
+# FILE PATHS
 # ====================================================
 
 BASE_DIR = Path(__file__).resolve().parent
 LOGO_PATH = BASE_DIR / "assets" / "veritas_logo.png"
-# =========================
 # Page Config
 # =========================
 st.set_page_config(
