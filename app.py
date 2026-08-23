@@ -369,32 +369,30 @@ if "logged_in" not in st.session_state:
 if "username" not in st.session_state:
     st.session_state.username = ""
 
-
 if not st.session_state.logged_in:
 
     # ====================================================
-    # # ====================================================
-# LOGIN LOGO
-# ====================================================
+    # LOGIN LOGO
+    # ====================================================
 
-col1, col2, col3 = st.columns([1, 2, 1])
+    col1, col2, col3 = st.columns([1, 2, 1])
 
-with col2:
+    with col2:
 
-    st.image(
-        str(LOGO_PATH),
-        width=150
-    )
+        st.image(
+            str(LOGO_PATH),
+            width=150
+        )
 
-    st.title("🛡️ Veritas Login")
+        st.title("🛡️ Veritas Login")
 
-    choice = st.selectbox(
-        "Select Option",
-        [
-            "Login",
-            "Register"
-        ]
-    )
+        choice = st.selectbox(
+            "Select Option",
+            [
+                "Login",
+                "Register"
+            ]
+        )
 
     username = st.text_input(
         "Username"
