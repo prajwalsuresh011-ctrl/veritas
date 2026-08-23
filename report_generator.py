@@ -23,9 +23,9 @@ def generate_report(
     target,
     score,
     status,
-    reasons
+    reasons,
+    verification_id=None
 ):
-
     # ====================================================
     # REPORT DIRECTORY
     # ====================================================
