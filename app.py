@@ -507,9 +507,6 @@ else:
     default_index = 0
 
 
-# ====================================================
-# SIDEBAR
-# ====================================================
 
 with st.sidebar:
 
@@ -607,9 +604,6 @@ with st.sidebar:
 st.session_state.home_navigation = None
 
 
-# ====================================================
-# CLEAR TEMPORARY HOME NAVIGATION
-# ====================================================
 
 # IMPORTANT:
 # Do NOT put this before the elif navigation chain.
@@ -814,58 +808,6 @@ if selected == "Home":
     # QUICK VERIFICATION
     # ====================================================
 
-    st.subheader(
-        "🔍 Quick Verification"
-    )
-
-    st.write(
-        "Choose a verification method to analyze "
-        "digital content."
-    )
-
-    col1, col2, col3, col4 = st.columns(4)
-
-    with col1:
-
-        if st.button(
-            "🌐\nURL Scan",
-            use_container_width=True
-        ):
-
-            st.session_state.home_navigation = "URL"
-            st.rerun()
-
-    with col2:
-
-        if st.button(
-            "📷\nQR Scan",
-            use_container_width=True
-        ):
-
-            st.session_state.home_navigation = "QR Code"
-            st.rerun()
-
-    with col3:
-
-        if st.button(
-            "📄\nDocument",
-            use_container_width=True
-        ):
-
-            st.session_state.home_navigation = "Document"
-            st.rerun()
-
-    with col4:
-
-        if st.button(
-            "🖼️\nImage Scan",
-            use_container_width=True
-        ):
-
-            st.session_state.home_navigation = "Image"
-            st.rerun()
-
-    st.divider()
 
     # ====================================================
     # SECURITY OVERVIEW
