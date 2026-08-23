@@ -51,6 +51,9 @@ def extract_url(text):
 # ====================================================
 # GEMINI RESPONSE
 # ====================================================
+# ====================================================
+# GEMINI RESPONSE
+# ====================================================
 
 def ask_gemini(prompt):
 
@@ -73,7 +76,7 @@ def ask_gemini(prompt):
             return (
                 "⚠️ Gemini API key is not configured.\n\n"
                 "Please add GEMINI_API_KEY to "
-                "Streamlit Secrets."
+                "Streamlit Cloud Secrets."
             )
 
         client = genai.Client(
@@ -81,20 +84,26 @@ def ask_gemini(prompt):
         )
 
         response = client.models.generate_content(
-            model="gemini-3.7-flash",
+            model="gemini-3.1-flash-lite",
             contents=prompt
         )
 
-        return response.text
+        if response.text:
+
+            return response.text
+
+        return (
+            "⚠️ Gemini returned an empty response. "
+            "Please try again."
+        )
 
     except Exception as e:
 
         return (
-            "⚠️ Veritas AI could not connect "
-            "to the Gemini API.\n\n"
-            f"Error: {e}"
+            "⚠️ Veritas AI is temporarily unavailable.\n\n"
+            f"Gemini error: {e}\n\n"
+            "Please try again in a few moments."
         )
-
 
 # ====================================================
 # OLLAMA RESPONSE
