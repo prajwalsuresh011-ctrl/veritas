@@ -637,7 +637,7 @@ with st.sidebar:
 
 if selected == "Home":
 
-st.title("🛡️ Veritas AI")
+    st.title("🛡️ Veritas AI")
 
 st.write(
     f"Welcome back, **{st.session_state.username}** 👋"
