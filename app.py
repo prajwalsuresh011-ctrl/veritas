@@ -30,8 +30,10 @@ import plotly.graph_objects as go
 # FILE PATHS
 # ====================================================
 
+from pathlib import Path
+
 BASE_DIR = Path(__file__).resolve().parent
-LOGO_PATH = BASE_DIR / "assets" / "veritas_logo.png"
+LOGO_PATH = BASE_DIR / "veritas_logo.png"
 # Page Config
 # =========================
 st.set_page_config(
