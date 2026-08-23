@@ -918,6 +918,9 @@ security results and help users understand potential threats.
 # ====================================================
 # IMAGE VERIFICATION
 # ====================================================
+# ====================================================
+# IMAGE VERIFICATION
+# ====================================================
 
 elif selected == "Image":
 
@@ -939,6 +942,10 @@ elif selected == "Image":
         type=["jpg", "jpeg", "png"],
         key="image_upload"
     )
+
+    # ====================================================
+    # ANALYZE IMAGE
+    # ====================================================
 
     if st.button(
         "🔍 Analyze Image",
@@ -1070,6 +1077,36 @@ elif selected == "Image":
                             )
 
                     st.divider()
+
+                    # ====================================================
+                    # SECURITY ANALYSIS
+                    # ====================================================
+
+                    st.subheader(
+                        "🔍 Security Analysis"
+                    )
+
+                    if reasons:
+
+                        for reason in reasons:
+
+                            st.write(
+                                "⚠️",
+                                reason
+                            )
+
+                    else:
+
+                        st.success(
+                            "✅ No suspicious indicators were detected."
+                        )
+
+                except Exception as e:
+
+                    st.error(
+                        f"❌ Image analysis error: {e}"
+                    )
+
 
                     # ====================================================
                     # SECURITY ANALYSIS
