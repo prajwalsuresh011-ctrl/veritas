@@ -356,8 +356,7 @@ if "logged_in" not in st.session_state:
 if "username" not in st.session_state:
     st.session_state.username = ""
 
-if "home_navigation" not in st.session_state:
-    st.session_state.home_navigation = None
+
 # =========================
 #
 # ====================================================
@@ -474,7 +473,7 @@ if not st.session_state.logged_in:
 # NAVIGATION OPTIONS
 # ===================================================
 # ====================================================
-# SIDEBAR
+# NAVIGATION OPTIONS
 # ====================================================
 
 navigation_options = [
@@ -490,24 +489,29 @@ navigation_options = [
     "Settings"
 ]
 
-# ====================================================
-# SELECTED PAGE
-# ====================================================
+
 # ====================================================
 # NAVIGATION STATE
 # ====================================================
 
 if "selected_page" not in st.session_state:
-    st.session_state.selected_page = "Home"
 
-if "navigation_target" not in st.session_state:
-    st.session_state.navigation_target = None
+    st.session_state.selected_page = "Home"
 
 if st.session_state.selected_page not in navigation_options:
+
     st.session_state.selected_page = "Home"
+
+
 # ====================================================
-# SIDEBAR
+# QUICK NAVIGATION FUNCTION
 # ====================================================
+
+def go_to_page(page):
+
+    st.session_state.selected_page = page
+
+
 # ====================================================
 # SIDEBAR
 # ====================================================
@@ -520,15 +524,6 @@ with st.sidebar:
     )
 
     st.title("Veritas")
-
-    # Check if Home Quick Verification requested navigation
-    manual_index = None
-
-    if st.session_state.navigation_target is not None:
-
-        manual_index = navigation_options.index(
-            st.session_state.navigation_target
-        )
 
     selected = option_menu(
 
@@ -555,9 +550,9 @@ with st.sidebar:
             st.session_state.selected_page
         ),
 
-        manual_select=manual_index,
-
         orientation="vertical",
+
+        key="sidebar_navigation",
 
         styles={
             "container": {
@@ -584,17 +579,23 @@ with st.sidebar:
         }
     )
 
-    # Save selected page
-    st.session_state.selected_page = selected
+    # Save sidebar selection
 
-    # Clear temporary navigation request
-    st.session_state.navigation_target = None
+    if selected != st.session_state.selected_page:
+
+        st.session_state.selected_page = selected
+
+        st.rerun()
 
     st.divider()
 
     st.write(
         f"👤 Logged in as: **{st.session_state.username}**"
     )
+
+    # ====================================================
+    # LOGOUT
+    # ====================================================
 
     if st.button(
         "🚪 Logout",
@@ -604,9 +605,15 @@ with st.sidebar:
         st.session_state.logged_in = False
         st.session_state.username = ""
         st.session_state.selected_page = "Home"
-        st.session_state.navigation_target = None
 
         st.rerun()
+
+
+# ====================================================
+# CURRENT PAGE
+# ====================================================
+
+selected = st.session_state.selected_page
 
 
 # ====================================================
@@ -627,65 +634,61 @@ if selected == "Home":
 
     st.divider()
 
+
     # ====================================================
     # QUICK VERIFICATION
-   # ====================================================
-# QUICK VERIFICATION
-# ====================================================
+    # ====================================================
 
-st.subheader("🚀 Quick Verification")
+    st.subheader("🚀 Quick Verification")
 
-col1, col2, col3, col4 = st.columns(4)
-
-with col1:
-
-    if st.button(
-        "🌐 URL",
-        use_container_width=True,
-        key="home_url_button"
-    ):
-
-        st.session_state.navigation_target = "URL"
-        st.rerun()
+    col1, col2, col3, col4 = st.columns(4)
 
 
-with col2:
+    with col1:
 
-    if st.button(
-        "📱 QR Code",
-        use_container_width=True,
-        key="home_qr_button"
-    ):
-
-        st.session_state.navigation_target = "QR Code"
-        st.rerun()
-
-
-with col3:
-
-    if st.button(
-        "📄 Document",
-        use_container_width=True,
-        key="home_document_button"
-    ):
-
-        st.session_state.navigation_target = "Document"
-        st.rerun()
+        st.button(
+            "🌐 URL",
+            use_container_width=True,
+            key="home_url_button",
+            on_click=go_to_page,
+            args=("URL",)
+        )
 
 
-with col4:
+    with col2:
 
-    if st.button(
-        "🖼️ Image",
-        use_container_width=True,
-        key="home_image_button"
-    ):
+        st.button(
+            "📱 QR Code",
+            use_container_width=True,
+            key="home_qr_button",
+            on_click=go_to_page,
+            args=("QR Code",)
+        )
 
-        st.session_state.navigation_target = "Image"
-        st.rerun()
+
+    with col3:
+
+        st.button(
+            "📄 Document",
+            use_container_width=True,
+            key="home_document_button",
+            on_click=go_to_page,
+            args=("Document",)
+        )
+
+
+    with col4:
+
+        st.button(
+            "🖼️ Image",
+            use_container_width=True,
+            key="home_image_button",
+            on_click=go_to_page,
+            args=("Image",)
+        )
+
 
     st.divider()
-
 
 
     # ====================================================
@@ -702,6 +705,7 @@ with col4:
     safe = stats["safe"]
     suspicious = stats["suspicious"]
     dangerous = stats["dangerous"]
+
 
     # ====================================================
     # STATISTICS CARDS
@@ -737,7 +741,9 @@ with col4:
             dangerous
         )
 
+
     st.divider()
+
 
     # ====================================================
     # SECURITY STATUS
@@ -759,7 +765,9 @@ with col4:
             dangerous / total
         ) * 100
 
+
         col1, col2 = st.columns(2)
+
 
         with col1:
 
@@ -771,6 +779,7 @@ with col4:
                 safe_percentage / 100
             )
 
+
             st.write(
                 f"🟡 Suspicious: "
                 f"**{suspicious_percentage:.1f}%**"
@@ -780,6 +789,7 @@ with col4:
                 suspicious_percentage / 100
             )
 
+
             st.write(
                 f"🔴 Dangerous: "
                 f"**{dangerous_percentage:.1f}%**"
@@ -788,6 +798,7 @@ with col4:
             st.progress(
                 dangerous_percentage / 100
             )
+
 
         with col2:
 
@@ -812,6 +823,7 @@ with col4:
                     "in your current history."
                 )
 
+
     else:
 
         st.info(
@@ -819,7 +831,10 @@ with col4:
             "Start your first verification."
         )
 
+
     st.divider()
+
+
 
 
     # ====================================================
