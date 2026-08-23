@@ -491,10 +491,9 @@ with st.sidebar:
         ],
 
         menu_icon="shield-lock",
-        default_index=0
+        default_index=0,
+orientation="vertical",
     )
-        orientation="vertical",
-
         styles={
             "container": {
                 "padding": "5px"
