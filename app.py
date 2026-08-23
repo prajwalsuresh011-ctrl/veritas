@@ -1650,7 +1650,6 @@ elif selected == "QR Code":
 # ====================================================
 # DOCUMENT
 # ====================================================
-
 # ====================================================
 # DOCUMENT VERIFICATION
 # ====================================================
@@ -1708,7 +1707,7 @@ elif selected == "Document":
                     # DOCUMENT ANALYSIS
                     # ====================================================
 
-                    score, status, reasons = analyze_document(
+                    score, status, reasons, extracted_text = analyze_document(
                         uploaded_document
                     )
 
@@ -1803,7 +1802,29 @@ elif selected == "Document":
                             "No suspicious indicators were detected."
                         )
 
-                    st.divider()
+                    # ====================================================
+                    # EXTRACTED TEXT
+                    # ====================================================
+
+                    if extracted_text:
+
+                        st.divider()
+
+                        st.subheader(
+                            "📄 Extracted Content"
+                        )
+
+                        st.text_area(
+                            "Document Text",
+                            extracted_text,
+                            height=300
+                        )
+
+                except Exception as e:
+
+                    st.error(
+                        f"❌ Document analysis error: {e}"
+                    )
 
                     # ====================================================
                     # AI VERDICT
