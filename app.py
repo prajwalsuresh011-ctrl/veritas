@@ -1265,65 +1265,37 @@ elif selected == "URL":
                     )
 
                     risk_data = {
-    "url": {
-        "safe": status == "SAFE",
-        "score": score
-    }
-}
+                        "url": {
+                            "safe": status == "SAFE",
+                            "score": score
+                        }
+                    }
 
                     risk = analyze_risk(
                         risk_data
                     )
 
+                    # ====================================================
+                    # SAVE VERIFICATION
+                    # ====================================================
+
                     verification_id = save_scan(
-                    st.session_state.username,
-                    "URL",
-                    url,
-                    score,
-                     status
-                   ) 
+                        st.session_state.username,
+                        "URL",
+                        url,
+                        score,
+                        status
+                    )
 
                     st.success(
                         "URL analysis completed."
                     )
+
                     st.info(
-    f"🔐 Verification ID: **{verification_id}**"
-)
+                        f"🔐 Verification ID: **{verification_id}**"
+                    )
 
                     st.divider()
-
-                    # TRUST SCORE
-                    col1, col2 = st.columns(2)
-
-                    with col1:
-
-                        st.metric(
-                            "🛡️ Trust Score",
-                            f"{score}/100"
-                        )
-
-                    with col2:
-
-                        if status == "SAFE":
-
-                            st.success(
-                                "🟢 SAFE"
-                            )
-
-                        elif status == "SUSPICIOUS":
-
-                            st.warning(
-                                "🟡 SUSPICIOUS"
-                            )
-
-                        else:
-
-                            st.error(
-                                "🔴 DANGEROUS"
-                            )
-
-                    st.divider()
-
                     # RISK ASSESSMENT
                     st.subheader(
                         "🛡️ Risk Assessment"
