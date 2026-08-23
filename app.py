@@ -451,6 +451,8 @@ st.stop()
 
 
 # ====================================================
+# # ====================================================
+# ====================================================
 # SIDEBAR
 # ====================================================
 
@@ -464,89 +466,60 @@ with st.sidebar:
     st.title("Veritas")
 
     selected = option_menu(
-    menu_title="Navigation",
-    options=[
-        "Home",
-        "URL",
-        "QR Code",
-        "Document",
-        "Image",
-        "History",
-        "Analytics",
-        "AI Assistant",
-        "Settings"
-    ],
-    icons=[
-        "house-fill",
-        "globe2",
-        "qr-code",
-        "file-earmark-text",
-        "image",
-        "clock-history",
-        "bar-chart-fill",
-        "robot",
-        "gear-fill"
-    ],
-    menu_icon="shield-lock",
-    default_index=0,
-    orientation="vertical"
-)
-        selected = option_menu(
-    menu_title="Navigation",
+        menu_title="Navigation",
 
-    options=[
-        "Home",
-        "URL",
-        "QR Code",
-        "Document",
-        "Image",
-        "History",
-        "Analytics",
-        "AI Assistant",
-        "Settings"
-    ],
+        options=[
+            "Home",
+            "URL",
+            "QR Code",
+            "Document",
+            "Image",
+            "History",
+            "Analytics",
+            "AI Assistant",
+            "Settings"
+        ],
 
-    icons=[
-        "house-fill",
-        "globe2",
-        "qr-code",
-        "file-earmark-text",
-        "image",
-        "clock-history",
-        "bar-chart-fill",
-        "robot",
-        "gear-fill"
-    ],
+        icons=[
+            "house-fill",
+            "globe2",
+            "qr-code",
+            "file-earmark-text",
+            "image",
+            "clock-history",
+            "bar-chart-fill",
+            "robot",
+            "gear-fill"
+        ],
 
-    menu_icon="shield-lock",
-    default_index=0,
-    orientation="vertical",
+        menu_icon="shield-lock",
+        default_index=0,
+        orientation="vertical",
 
-    styles={
-        "container": {
-            "padding": "5px"
-        },
+        styles={
+            "container": {
+                "padding": "5px"
+            },
 
-        "icon": {
-            "color": "#00C853",
-            "font-size": "18px"
-        },
+            "icon": {
+                "color": "#00C853",
+                "font-size": "18px"
+            },
 
-        "nav-link": {
-            "font-size": "15px",
-            "text-align": "left",
-            "margin": "5px",
-            "padding": "10px",
-            "border-radius": "8px"
-        },
+            "nav-link": {
+                "font-size": "15px",
+                "text-align": "left",
+                "margin": "5px",
+                "padding": "10px",
+                "border-radius": "8px"
+            },
 
-        "nav-link-selected": {
-            "background-color": "#00C853",
-            "color": "white"
+            "nav-link-selected": {
+                "background-color": "#00C853",
+                "color": "white"
+            }
         }
-    }
-)
-    
+    )
 
     st.divider()
 
@@ -554,12 +527,9 @@ with st.sidebar:
         f"👤 Logged in as: **{st.session_state.username}**"
     )
 
-
     # -----------------------------
     # USER INFORMATION
-    # -----------------------------
-
-   
+    # -----------------------------   
     # -----------------------------
     # LOGOUT
     # -----------------------------
