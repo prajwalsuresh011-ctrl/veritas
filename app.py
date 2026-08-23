@@ -971,7 +971,8 @@ elif selected == "Image":
                             uploaded_image.name,
                             score,
                             status,
-                            reasons
+                            reasons,
+                            verification_id
                         )
 
                         with open(report, "rb") as pdf:
@@ -1205,7 +1206,8 @@ elif selected == "URL":
                             url,
                             score,
                             status,
-                            reasons
+                            reasons,
+                            verification_id
                         )
 
                         with open(report, "rb") as pdf:
@@ -1443,7 +1445,8 @@ elif selected == "QR Code":
                                 url,
                                 score,
                                 status,
-                                reasons
+                                reasons,
+                                verification_id
                             )
 
                             with open(report, "rb") as pdf:
