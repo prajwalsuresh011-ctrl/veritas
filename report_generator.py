@@ -15,7 +15,6 @@ from reportlab.lib.units import mm
 from datetime import datetime
 import os
 import html
-import uuid
 
 
 def generate_report(
@@ -26,6 +25,7 @@ def generate_report(
     reasons,
     verification_id=None
 ):
+
     # ====================================================
     # REPORT DIRECTORY
     # ====================================================
@@ -36,14 +36,19 @@ def generate_report(
     )
 
     # ====================================================
-    # VERIFICATION ID
+    # FALLBACK VERIFICATION ID
     # ====================================================
+    # Normally the ID comes from database.save_scan()
+    # This fallback prevents errors if an old call
+    # does not provide an ID.
 
-    verification_id = (
-        "VERITAS-"
-        f"{datetime.now().year}-"
-        f"{uuid.uuid4().hex[:8].upper()}"
-    )
+    if not verification_id:
+
+        verification_id = (
+            "VERITAS-"
+            f"{datetime.now().year}-"
+            f"{datetime.now().strftime('%H%M%S')}"
+        )
 
     # ====================================================
     # DATE
@@ -170,7 +175,7 @@ def generate_report(
     elements.append(
         Paragraph(
             f"<b>Verification ID</b><br/>"
-            f"{verification_id}",
+            f"{html.escape(str(verification_id))}",
             verification_id_style
         )
     )
@@ -204,7 +209,9 @@ def generate_report(
                 body_style
             ),
             Paragraph(
-                verification_id,
+                html.escape(
+                    str(verification_id)
+                ),
                 body_style
             )
         ],
@@ -214,7 +221,9 @@ def generate_report(
                 body_style
             ),
             Paragraph(
-                html.escape(str(scan_type)),
+                html.escape(
+                    str(scan_type)
+                ),
                 body_style
             )
         ],
@@ -244,7 +253,9 @@ def generate_report(
                 body_style
             ),
             Paragraph(
-                html.escape(str(status)),
+                html.escape(
+                    str(status)
+                ),
                 body_style
             )
         ],
@@ -406,14 +417,7 @@ def generate_report(
 
     elements.append(
         Paragraph(
-            "━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
-            center_style
-        )
-    )
-
-    elements.append(
-        Paragraph(
-            "<b>Veritas AI</b>",
+            "Veritas AI",
             center_style
         )
     )
