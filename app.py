@@ -641,8 +641,6 @@ st.session_state.home_navigation = None
 # ====================================================
 
 # ====================================================
-## ====================================================
-# ====================================================
 # HOME DASHBOARD
 # ====================================================
 
@@ -676,7 +674,8 @@ elif selected == "Home":
 
         if st.button(
             "🌐 URL",
-            use_container_width=True
+            use_container_width=True,
+            key="home_url_button"
         ):
 
             st.session_state.home_navigation = "URL"
@@ -686,7 +685,8 @@ elif selected == "Home":
 
         if st.button(
             "📱 QR Code",
-            use_container_width=True
+            use_container_width=True,
+            key="home_qr_button"
         ):
 
             st.session_state.home_navigation = "QR Code"
@@ -696,7 +696,8 @@ elif selected == "Home":
 
         if st.button(
             "📄 Document",
-            use_container_width=True
+            use_container_width=True,
+            key="home_document_button"
         ):
 
             st.session_state.home_navigation = "Document"
@@ -706,7 +707,8 @@ elif selected == "Home":
 
         if st.button(
             "🖼️ Image",
-            use_container_width=True
+            use_container_width=True,
+            key="home_image_button"
         ):
 
             st.session_state.home_navigation = "Image"
@@ -718,6 +720,8 @@ elif selected == "Home":
     # SECURITY OVERVIEW
     # ====================================================
 
+    st.subheader("📊 Security Overview")
+
     stats = get_statistics(
         st.session_state.username
     )
@@ -727,36 +731,37 @@ elif selected == "Home":
     suspicious = stats["suspicious"]
     dangerous = stats["dangerous"]
 
-    st.subheader("📊 Security Overview")
-
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
+
         st.metric(
             "📊 Total Scans",
             total
         )
 
     with col2:
+
         st.metric(
             "🟢 Safe",
             safe
         )
 
     with col3:
+
         st.metric(
             "🟡 Suspicious",
             suspicious
         )
 
     with col4:
+
         st.metric(
             "🔴 Dangerous",
             dangerous
         )
-        
+
     st.divider()
-        st.divider()
 
     # ====================================================
     # RECENT SCAN ACTIVITY
@@ -805,35 +810,33 @@ elif selected == "Home":
 
                 icon = "🔴"
 
-            with st.container():
+            col1, col2, col3 = st.columns(
+                [2, 5, 2]
+            )
 
-                col1, col2, col3 = st.columns(
-                    [2, 4, 2]
+            with col1:
+
+                st.write(
+                    f"{icon} **{scan_type}**"
                 )
 
-                with col1:
+            with col2:
 
-                    st.write(
-                        f"{icon} **{scan_type}**"
-                    )
-
-                with col2:
-
-                    st.write(
-                        target
-                    )
-
-                with col3:
-
-                    st.write(
-                        f"**{score}/100**"
-                    )
-
-                st.caption(
-                    f"Status: {status}  •  {scan_date}"
+                st.write(
+                    target
                 )
 
-                st.divider()
+            with col3:
+
+                st.write(
+                    f"**{score}/100**"
+                )
+
+            st.caption(
+                f"Status: {status} • {scan_date}"
+            )
+
+            st.divider()
 
     # ====================================================
     # QUICK VERIFICATION
