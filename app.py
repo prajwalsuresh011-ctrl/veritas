@@ -417,6 +417,30 @@ if not st.session_state.logged_in:
         st.title(
             "🛡️ Veritas Login"
         )
+# ====================================================
+# LOGIN / REGISTER
+# ====================================================
+
+if not st.session_state.logged_in:
+
+    # ====================================================
+    # LOGIN LOGO
+    # ====================================================
+
+    col1, col2, col3 = st.columns(
+        [1, 2, 1]
+    )
+
+    with col2:
+
+        st.image(
+            str(LOGO_PATH),
+            width=150
+        )
+
+        st.title(
+            "🛡️ Veritas Login"
+        )
 
         # ====================================================
         # LOGIN / REGISTER SELECTOR
@@ -555,12 +579,6 @@ if not st.session_state.logged_in:
 
 
 # ====================================================
-# SIDEBAR
-# ====================================================
-# ====================================================
-# NAVIGATION OPTIONS
-# ===================================================
-# ====================================================
 # NAVIGATION OPTIONS
 # ====================================================
 
@@ -586,18 +604,10 @@ if "selected_page" not in st.session_state:
 
     st.session_state.selected_page = "Home"
 
+
 if st.session_state.selected_page not in navigation_options:
 
     st.session_state.selected_page = "Home"
-
-
-# ====================================================
-# QUICK NAVIGATION FUNCTION
-# ====================================================
-
-def go_to_page(page):
-
-    st.session_state.selected_page = page
 
 
 # ====================================================
@@ -612,6 +622,10 @@ with st.sidebar:
     )
 
     st.title("Veritas")
+
+    # ====================================================
+    # SIDEBAR NAVIGATION
+    # ====================================================
 
     selected = option_menu(
 
@@ -643,6 +657,7 @@ with st.sidebar:
         key="sidebar_navigation",
 
         styles={
+
             "container": {
                 "padding": "5px"
             },
@@ -667,7 +682,10 @@ with st.sidebar:
         }
     )
 
-    # Save sidebar selection
+
+    # ====================================================
+    # UPDATE SELECTED PAGE
+    # ====================================================
 
     if selected != st.session_state.selected_page:
 
@@ -675,11 +693,17 @@ with st.sidebar:
 
         st.rerun()
 
+
+    # ====================================================
+    # USER INFORMATION
+    # ====================================================
+
     st.divider()
 
     st.write(
         f"👤 Logged in as: **{st.session_state.username}**"
     )
+
 
     # ====================================================
     # LOGOUT
@@ -687,14 +711,19 @@ with st.sidebar:
 
     if st.button(
         "🚪 Logout",
-        use_container_width=True
+        use_container_width=True,
+        key="logout_button"
     ):
 
         st.session_state.logged_in = False
+
         st.session_state.username = ""
+
         st.session_state.selected_page = "Home"
 
         st.rerun()
+
+
 
 
 # ====================================================
