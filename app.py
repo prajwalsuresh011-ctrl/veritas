@@ -376,13 +376,12 @@ if not st.session_state.logged_in:
 
     col1, col2, col3 = st.columns([1, 2, 1])
 
-    with col2:
+with col2:
 
-        st.image(
-            "assets/veritas_logo.png",
-            width=150
-        )
-
+    st.image(
+        str(LOGO_PATH),
+        width=150
+    )
     st.title("🛡️ Veritas Login")
 
     choice = st.selectbox(
@@ -445,7 +444,7 @@ if not st.session_state.logged_in:
             else:
                 st.error("Invalid username or password")
         st.stop()
-        Sidebar
+    
 # =========================
 
 # ====================================================
@@ -471,9 +470,9 @@ if not st.session_state.logged_in:
 with st.sidebar:
 
     st.image(
-    "assets/veritas_logo.png",
-    width=80
-)
+        str(LOGO_PATH),
+        width=80
+    )
 
     st.title("Veritas")
 
