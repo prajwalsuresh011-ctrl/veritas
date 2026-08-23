@@ -106,6 +106,10 @@ def generate_verification_id():
 # SAVE SCAN RESULT
 # ====================================================
 
+# ====================================================
+# SAVE SCAN RESULT
+# ====================================================
+
 def save_scan(
     username,
     scan_type,
@@ -143,7 +147,6 @@ def save_scan(
     conn.close()
 
     return verification_id
-
 
 # ====================================================
 # GET USER SCAN HISTORY
