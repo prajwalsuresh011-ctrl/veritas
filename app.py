@@ -2913,6 +2913,122 @@ elif selected == "Settings":
     st.divider()
 
     # ====================================================
+# VERIFY ID
+# ====================================================
+
+elif selected == "Verify ID":
+
+    st.title("🔐 Verify Verification ID")
+
+    st.write(
+        "Enter a Veritas Verification ID to retrieve "
+        "the corresponding verification result."
+    )
+
+    st.divider()
+
+    verification_id = st.text_input(
+        "🔎 Verification ID",
+        placeholder="Example: VERITAS-2026-ABC12345",
+        key="verify_id_input"
+    )
+
+    if st.button(
+        "🔍 Verify ID",
+        use_container_width=True,
+        key="verify_id_button"
+    ):
+
+        if not verification_id.strip():
+
+            st.warning(
+                "Please enter a Verification ID."
+            )
+
+        else:
+
+            result = get_scan_by_verification_id(
+                verification_id.strip(),
+                st.session_state.username
+            )
+
+            if result:
+
+                st.success(
+                    "✅ Verification ID found."
+                )
+
+                st.divider()
+
+                st.subheader(
+                    "📋 Verification Details"
+                )
+
+                col1, col2 = st.columns(2)
+
+                with col1:
+
+                    st.write(
+                        f"**Verification ID:** "
+                        f"{result[1]}"
+                    )
+
+                    st.write(
+                        f"**Scan Type:** "
+                        f"{result[3]}"
+                    )
+
+                    st.write(
+                        f"**Target:** "
+                        f"{result[4]}"
+                    )
+
+                with col2:
+
+                    st.metric(
+                        "Trust Score",
+                        f"{result[5]}/100"
+                    )
+
+                    status = result[6]
+
+                    if status in [
+                        "SAFE",
+                        "Verified",
+                        "Likely Genuine"
+                    ]:
+
+                        st.success(
+                            f"🟢 {status}"
+                        )
+
+                    elif status in [
+                        "SUSPICIOUS",
+                        "Needs Review"
+                    ]:
+
+                        st.warning(
+                            f"🟡 {status}"
+                        )
+
+                    else:
+
+                        st.error(
+                            f"🔴 {status}"
+                        )
+
+                st.write(
+                    f"**Date:** {result[7]}"
+                )
+
+            else:
+
+                st.error(
+                    "❌ Verification ID not found "
+                    "in your verification history."
+                )
+
+    # ====================================================
     # ACCOUNT INFORMATION
     # ====================================================
 
