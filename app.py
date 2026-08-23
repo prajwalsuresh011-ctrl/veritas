@@ -2018,6 +2018,48 @@ elif selected == "Analytics":
         )
 
     st.divider()
+        # SCAN ACTIVITY
+    # ====================================================
+
+    st.subheader(
+        "📈 Scan Activity"
+    )
+
+    activity_fig = go.Figure()
+
+    activity_fig.add_trace(
+        go.Bar(
+            x=[
+                "Safe",
+                "Suspicious",
+                "Dangerous"
+            ],
+            y=[
+                safe,
+                suspicious,
+                dangerous
+            ],
+            text=[
+                safe,
+                suspicious,
+                dangerous
+            ],
+            textposition="auto"
+        )
+    )
+
+    activity_fig.update_layout(
+        title="Verification Results",
+        xaxis_title="Risk Level",
+        yaxis_title="Number of Scans",
+        height=400,
+        showlegend=False
+    )
+
+    st.plotly_chart(
+        activity_fig,
+        use_container_width=True
+    )
 
     # ====================================================
     # SECURITY SUMMARY
