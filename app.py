@@ -2828,6 +2828,8 @@ elif selected == "Analytics":
 
 # ====================================================
 # AI ASSISTANT
+# ====================================================# ====================================================
+# AI ASSISTANT
 # ====================================================
 
 elif selected == "AI Assistant":
@@ -2840,13 +2842,16 @@ elif selected == "AI Assistant":
         "Ask Veritas anything about cybersecurity."
     )
 
+    st.divider()
+
     question = st.text_area(
         "Ask a cybersecurity question",
         placeholder=(
             "Example: How can I identify "
             "a phishing website?"
         ),
-        key="ai_question"
+        key="ai_question",
+        height=120
     )
 
     if st.button(
@@ -2855,10 +2860,10 @@ elif selected == "AI Assistant":
         use_container_width=True
     ):
 
-        if question.strip() == "":
+        if not question.strip():
 
             st.warning(
-                "Please enter a question."
+                "⚠️ Please enter a question."
             )
 
         else:
@@ -2870,24 +2875,25 @@ elif selected == "AI Assistant":
                 try:
 
                     answer = ask_veritas(
-                        question,
+                        question.strip(),
                         st.session_state.username
                     )
 
+                    st.divider()
+
                     st.subheader(
-                        "🧠 Veritas"
+                        "🧠 Veritas AI"
                     )
 
-                    st.info(
+                    st.markdown(
                         answer
                     )
 
                 except Exception as e:
 
                     st.error(
-                        f"AI Assistant Error: {e}"
+                        f"❌ AI Assistant Error: {e}"
                     )
-
 
 # ====================================================
 # SETTINGS
