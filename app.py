@@ -489,6 +489,8 @@ navigation_options = [
 
 # ====================================================
 # HOME NAVIGATION
+# # ====================================================
+# HOME NAVIGATION
 # ====================================================
 
 if "home_navigation" not in st.session_state:
@@ -533,7 +535,6 @@ with st.sidebar:
             "file-earmark-text",
             "image",
             "clock-history",
-            "patch-check-fill",
             "bar-chart-fill",
             "robot",
             "gear-fill"
@@ -572,17 +573,9 @@ with st.sidebar:
 
     st.divider()
 
-    # ====================================================
-    # USER INFORMATION
-    # ====================================================
-
     st.write(
         f"👤 Logged in as: **{st.session_state.username}**"
     )
-
-    # ====================================================
-    # LOGOUT
-    # ====================================================
 
     if st.button(
         "🚪 Logout",
@@ -594,7 +587,6 @@ with st.sidebar:
         st.session_state.home_navigation = None
 
         st.rerun()
-
 
 # ====================================================
 # CLEAR TEMPORARY HOME NAVIGATION
