@@ -1893,8 +1893,8 @@ elif selected == "Document":
 # HISTORY
 # ====================================================
 
-# ====================================================
-# SCAN HISTORY
+# # ====================================================
+# HISTORY
 # ====================================================
 
 elif selected == "History":
@@ -1902,7 +1902,8 @@ elif selected == "History":
     st.title("📜 Scan History")
 
     st.write(
-        f"Verification records for **{st.session_state.username}**"
+        f"Verification records for "
+        f"**{st.session_state.username}**"
     )
 
     st.divider()
@@ -2006,17 +2007,50 @@ elif selected == "History":
             for item in filtered_history:
 
                 scan_id = item[0]
-scan_type = item[2]
-target = item[3]
-score = item[4]
-status = item[5]
-date = item[6]
-verification_id = item[7]
+                scan_type = item[2]
+                target = item[3]
+                score = item[4]
+                status = item[5]
+                date = item[6]
+                verification_id = item[7]
+
+                # ====================================================
+                # STATUS ICON
+                # ====================================================
+
+                if status in [
+                    "SAFE",
+                    "Verified",
+                    "Likely Genuine"
+                ]:
+
+                    status_icon = "🟢"
+
+                elif status in [
+                    "SUSPICIOUS",
+                    "Needs Review"
+                ]:
+
+                    status_icon = "🟡"
+
+                else:
+
+                    status_icon = "🔴"
+
+                # ====================================================
+                # HISTORY EXPANDER
+                # ====================================================
+
                 with st.expander(
-                    f"#{scan_id}  |  {scan_type}  |  {status}"
+                    f"{status_icon} #{scan_id} | "
+                    f"{scan_type} | {status}"
                 ):
 
                     col1, col2, col3 = st.columns(3)
+
+                    # ====================================================
+                    # SCAN TYPE
+                    # ====================================================
 
                     with col1:
 
@@ -2028,6 +2062,10 @@ verification_id = item[7]
                             scan_type
                         )
 
+                    # ====================================================
+                    # TRUST SCORE
+                    # ====================================================
+
                     with col2:
 
                         st.write(
@@ -2038,6 +2076,10 @@ verification_id = item[7]
                             "Score",
                             f"{score}/100"
                         )
+
+                    # ====================================================
+                    # STATUS
+                    # ====================================================
 
                     with col3:
 
@@ -2072,6 +2114,10 @@ verification_id = item[7]
 
                     st.divider()
 
+                    # ====================================================
+                    # TARGET
+                    # ====================================================
+
                     st.write(
                         "**🎯 Target:**"
                     )
@@ -2079,58 +2125,75 @@ verification_id = item[7]
                     st.code(
                         target
                     )
-                    st.write(
-    "**🆔 Verification ID:**"
-)
 
-st.code(
-    verification_id
-)
+                    # ====================================================
+                    # VERIFICATION ID
+                    # ====================================================
+
+                    st.write(
+                        "**🆔 Verification ID:**"
+                    )
+
+                    st.code(
+                        verification_id
+                    )
+
+                    # ====================================================
+                    # DATE
+                    # ====================================================
 
                     st.write(
                         f"**🕒 Date:** {date}"
                     )
-st.divider()
 
-# ====================================================
-# GENERATE REPORT
-# ====================================================
+                    st.divider()
 
-if st.button(
-    "📄 Generate PDF Report",
-    key=f"history_report_{scan_id}",
-    use_container_width=True
-):
+                    # ====================================================
+                    # GENERATE PDF REPORT
+                    # ====================================================
 
-    try:
+                    if st.button(
+                        "📄 Generate PDF Report",
+                        key=f"history_report_{scan_id}",
+                        use_container_width=True
+                    ):
 
-        report = generate_report(
-            scan_type,
-            target,
-            score,
-            status,
-            [],
-            verification_id
-        )
+                        try:
 
-        with open(report, "rb") as pdf:
+                            report = generate_report(
+                                scan_type,
+                                target,
+                                score,
+                                status,
+                                [],
+                                verification_id
+                            )
 
-            st.download_button(
-                "📥 Download PDF Report",
-                pdf,
-                file_name=(
-                    f"Veritas_{verification_id}.pdf"
-                ),
-                mime="application/pdf",
-                key=f"history_download_{scan_id}",
-                use_container_width=True
-            )
+                            with open(
+                                report,
+                                "rb"
+                            ) as pdf:
 
-    except Exception as e:
+                                st.download_button(
+                                    "📥 Download PDF Report",
+                                    pdf,
+                                    file_name=(
+                                        f"Veritas_"
+                                        f"{verification_id}.pdf"
+                                    ),
+                                    mime="application/pdf",
+                                    key=(
+                                        f"history_download_"
+                                        f"{scan_id}"
+                                    ),
+                                    use_container_width=True
+                                )
 
-        st.error(
-            f"Report generation failed: {e}"
-        )
+                        except Exception as e:
+
+                            st.error(
+                                f"Report generation failed: {e}"
+                            )
 
         # ====================================================
         # CLEAR HISTORY
