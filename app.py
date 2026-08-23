@@ -417,30 +417,6 @@ if not st.session_state.logged_in:
         st.title(
             "🛡️ Veritas Login"
         )
-# ====================================================
-# LOGIN / REGISTER
-# ====================================================
-
-if not st.session_state.logged_in:
-
-    # ====================================================
-    # LOGIN LOGO
-    # ====================================================
-
-    col1, col2, col3 = st.columns(
-        [1, 2, 1]
-    )
-
-    with col2:
-
-        st.image(
-            str(LOGO_PATH),
-            width=150
-        )
-
-        st.title(
-            "🛡️ Veritas Login"
-        )
 
         # ====================================================
         # LOGIN / REGISTER SELECTOR
