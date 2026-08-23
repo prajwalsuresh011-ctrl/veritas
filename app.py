@@ -972,27 +972,18 @@ elif selected == "URL":
     # YOUR EXISTING URL CODE HERE
 
 
-# ====================================================
-# QR CODE VERIFICATION
-# ====================================================
 
 elif selected == "QR Code":
 
     # YOUR EXISTING QR CODE CODE HERE
 
 
-# ====================================================
-# DOCUMENT VERIFICATION
-# ====================================================
+
 
 elif selected == "Document":
 
     # YOUR EXISTING DOCUMENT CODE HERE
 
-
-# ====================================================
-# IMAGE VERIFICATION
-# ====================================================
 
 elif selected == "Image":
 
