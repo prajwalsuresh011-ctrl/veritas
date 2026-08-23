@@ -493,16 +493,21 @@ navigation_options = [
 # ====================================================
 # SELECTED PAGE
 # ====================================================
+# ====================================================
+# NAVIGATION STATE
+# ====================================================
 
 if "selected_page" not in st.session_state:
-
     st.session_state.selected_page = "Home"
+
+if "navigation_target" not in st.session_state:
+    st.session_state.navigation_target = None
 
 if st.session_state.selected_page not in navigation_options:
-
     st.session_state.selected_page = "Home"
-
-
+# ====================================================
+# SIDEBAR
+# ====================================================
 # ====================================================
 # SIDEBAR
 # ====================================================
@@ -515,6 +520,15 @@ with st.sidebar:
     )
 
     st.title("Veritas")
+
+    # Check if Home Quick Verification requested navigation
+    manual_index = None
+
+    if st.session_state.navigation_target is not None:
+
+        manual_index = navigation_options.index(
+            st.session_state.navigation_target
+        )
 
     selected = option_menu(
 
@@ -541,10 +555,11 @@ with st.sidebar:
             st.session_state.selected_page
         ),
 
+        manual_select=manual_index,
+
         orientation="vertical",
 
         styles={
-
             "container": {
                 "padding": "5px"
             },
@@ -569,21 +584,17 @@ with st.sidebar:
         }
     )
 
-    # ====================================================
-    # SAVE SELECTED PAGE
-    # ====================================================
-
+    # Save selected page
     st.session_state.selected_page = selected
+
+    # Clear temporary navigation request
+    st.session_state.navigation_target = None
 
     st.divider()
 
     st.write(
         f"👤 Logged in as: **{st.session_state.username}**"
     )
-
-    # ====================================================
-    # LOGOUT
-    # ====================================================
 
     if st.button(
         "🚪 Logout",
@@ -593,6 +604,7 @@ with st.sidebar:
         st.session_state.logged_in = False
         st.session_state.username = ""
         st.session_state.selected_page = "Home"
+        st.session_state.navigation_target = None
 
         st.rerun()
 
@@ -617,55 +629,60 @@ if selected == "Home":
 
     # ====================================================
     # QUICK VERIFICATION
-    # ====================================================
+   # ====================================================
+# QUICK VERIFICATION
+# ====================================================
 
-    st.subheader("🚀 Quick Verification")
+st.subheader("🚀 Quick Verification")
 
-    col1, col2, col3, col4 = st.columns(4)
+col1, col2, col3, col4 = st.columns(4)
 
-    with col1:
+with col1:
 
-        if st.button(
-            "🌐 URL",
-            use_container_width=True,
-            key="home_url_button"
-        ):
+    if st.button(
+        "🌐 URL",
+        use_container_width=True,
+        key="home_url_button"
+    ):
 
-            st.session_state.selected_page = "URL"
-            st.rerun()
+        st.session_state.navigation_target = "URL"
+        st.rerun()
 
-    with col2:
 
-        if st.button(
-            "📱 QR Code",
-            use_container_width=True,
-            key="home_qr_button"
-        ):
+with col2:
 
-            st.session_state.selected_page = "QR Code"
-            st.rerun()
+    if st.button(
+        "📱 QR Code",
+        use_container_width=True,
+        key="home_qr_button"
+    ):
 
-    with col3:
+        st.session_state.navigation_target = "QR Code"
+        st.rerun()
 
-        if st.button(
-            "📄 Document",
-            use_container_width=True,
-            key="home_document_button"
-        ):
 
-            st.session_state.selected_page = "Document"
-            st.rerun()
+with col3:
 
-    with col4:
+    if st.button(
+        "📄 Document",
+        use_container_width=True,
+        key="home_document_button"
+    ):
 
-        if st.button(
-            "🖼️ Image",
-            use_container_width=True,
-            key="home_image_button"
-        ):
+        st.session_state.navigation_target = "Document"
+        st.rerun()
 
-            st.session_state.selected_page = "Image"
-            st.rerun()
+
+with col4:
+
+    if st.button(
+        "🖼️ Image",
+        use_container_width=True,
+        key="home_image_button"
+    ):
+
+        st.session_state.navigation_target = "Image"
+        st.rerun()
 
     st.divider()
 
