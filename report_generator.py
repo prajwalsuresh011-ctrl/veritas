@@ -347,7 +347,7 @@ def generate_report(
 
         elements.append(
             Paragraph(
-                f"✔ {safe_reason}",
+                f"- {safe_reason}",
                 body_style
             )
         )
