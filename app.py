@@ -371,10 +371,11 @@ if "username" not in st.session_state:
 if not st.session_state.logged_in:
 
     # ====================================================
-    # LOGIN LOGO
-    # ====================================================
+    # # ====================================================
+# LOGIN LOGO
+# ====================================================
 
-    col1, col2, col3 = st.columns([1, 2, 1])
+col1, col2, col3 = st.columns([1, 2, 1])
 
 with col2:
 
@@ -382,6 +383,7 @@ with col2:
         str(LOGO_PATH),
         width=150
     )
+
     st.title("🛡️ Veritas Login")
 
     choice = st.selectbox(
@@ -400,7 +402,6 @@ with col2:
         "Password",
         type="password"
     )
-
 
     if choice == "Register":
 
@@ -423,7 +424,6 @@ with col2:
                     "Username already exists."
                 )
 
-
     else:
 
         if st.button("Login"):
@@ -442,29 +442,16 @@ with col2:
                 st.rerun()
 
             else:
-                st.error("Invalid username or password")
-        st.stop()
-    
-# =========================
+
+                st.error(
+                    "Invalid username or password"
+                )
+
+st.stop()
+
 
 # ====================================================
 # SIDEBAR
-# ====================================================
-# ====================================================
-# SIDEBAR
-# ====================================================
-
-# ====================================================
-# SIDEBAR
-# ====================================================
-
-# ====================================================
-# SIDEBAR
-# ====================================================
-
-# ====================================================
-## ====================================================
-# SIDEBAR OPTION MENU
 # ====================================================
 
 with st.sidebar:
@@ -503,9 +490,9 @@ with st.sidebar:
             "gear-fill"
         ],
 
-        menu_icon="shield-check",
-
-        default_index=0,
+        menu_icon="shield-lock",
+        default_index=0
+    )
         orientation="vertical",
 
         styles={
