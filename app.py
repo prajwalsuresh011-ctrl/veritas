@@ -22,6 +22,12 @@ from auth import register_user, login_user
 from chatbot import ask_veritas
 
 import plotly.graph_objects as go
+
+#FILE PATHS
+# ====================================================
+
+BASE_DIR = Path(__file__).resolve().parent
+LOGO_PATH = BASE_DIR / "assets" / "veritas_logo.png"
 # =========================
 # Page Config
 # =========================
