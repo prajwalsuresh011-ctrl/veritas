@@ -1660,20 +1660,29 @@ elif selected == "Document":
     st.title("📄 Document Verification")
 
     st.write(
-        "Upload a PDF document to check for suspicious indicators."
+        "Upload a document to analyze its content and "
+        "identify potential security risks."
     )
 
     st.divider()
 
     # ====================================================
-    # PDF UPLOAD
+    # DOCUMENT UPLOAD
     # ====================================================
 
-    uploaded = st.file_uploader(
-        "📤 Upload PDF Document",
-        type=["pdf"],
+    uploaded_document = st.file_uploader(
+        "📤 Upload Document",
+        type=[
+            "pdf",
+            "docx",
+            "txt"
+        ],
         key="document_upload"
     )
+
+    # ====================================================
+    # ANALYZE DOCUMENT
+    # ====================================================
 
     if st.button(
         "🔍 Analyze Document",
@@ -1681,10 +1690,10 @@ elif selected == "Document":
         use_container_width=True
     ):
 
-        if uploaded is None:
+        if uploaded_document is None:
 
             st.warning(
-                "Please upload a PDF document."
+                "Please upload a document."
             )
 
         else:
@@ -1695,94 +1704,178 @@ elif selected == "Document":
 
                 try:
 
-                    score, status, reasons, pages = analyze_document(
-                        uploaded
+                    # ====================================================
+                    # DOCUMENT ANALYSIS
+                    # ====================================================
+
+                    score, status, reasons = analyze_document(
+                        uploaded_document
                     )
 
                     # ====================================================
                     # SAVE HISTORY
                     # ====================================================
 
-                    report = generate_report(
-                      "Document",
-                      uploaded_document.name,
-                       score,
-                         status,
-                        reasons,
-                            verification_id
-                       )
+                    verification_id = save_scan(
+                        st.session_state.username,
+                        "Document",
+                        uploaded_document.name,
+                        score,
+                        status
+                    )
+
                     st.success(
                         "✅ Document analysis completed."
+                    )
+
+                    st.info(
+                        f"🔐 Verification ID: **{verification_id}**"
                     )
 
                     st.divider()
 
                     # ====================================================
-                    # DOCUMENT INFORMATION
+                    # TRUST SCORE
                     # ====================================================
+
+                    st.subheader(
+                        "🛡️ Trust Score"
+                    )
 
                     col1, col2 = st.columns(2)
 
                     with col1:
 
                         st.metric(
-                            "🛡️ Trust Score",
+                            "Trust Score",
                             f"{score}/100"
                         )
 
                     with col2:
 
-                        st.metric(
-                            "📄 Pages",
-                            pages
-                        )
+                        if status in [
+                            "SAFE",
+                            "Verified",
+                            "Likely Genuine"
+                        ]:
 
-                    # ====================================================
-                    # STATUS
-                    # ====================================================
+                            st.success(
+                                f"🟢 {status}"
+                            )
 
-                    if status == "Verified":
+                        elif status in [
+                            "SUSPICIOUS",
+                            "Needs Review"
+                        ]:
 
-                        st.success(
-                            "🟢 DOCUMENT VERIFIED"
-                        )
+                            st.warning(
+                                f"🟡 {status}"
+                            )
 
-                    elif status == "Needs Review":
+                        else:
 
-                        st.warning(
-                            "🟡 DOCUMENT NEEDS REVIEW"
-                        )
-
-                    else:
-
-                        st.error(
-                            "🔴 SUSPICIOUS DOCUMENT"
-                        )
+                            st.error(
+                                f"🔴 {status}"
+                            )
 
                     st.divider()
 
                     # ====================================================
-                    # ANALYSIS
+                    # SECURITY ANALYSIS
                     # ====================================================
 
                     st.subheader(
-                        "🔍 Document Analysis"
+                        "🔍 Security Analysis"
                     )
 
-                    if len(reasons) == 0:
+                    if reasons:
+
+                        for reason in reasons:
+
+                            st.write(
+                                "⚠️",
+                                reason
+                            )
+
+                    else:
 
                         st.success(
                             "No suspicious indicators were detected."
                         )
 
-                    else:
+                    st.divider()
 
-                        for reason in reasons:
+                    # ====================================================
+                    # AI VERDICT
+                    # ====================================================
 
-                            st.write(
-                                "✔️",
-                                reason
+                    st.subheader(
+                        "🧠 AI Verdict"
+                    )
+
+                    try:
+
+                        recommendation = generate_recommendation(
+                            status,
+                            reasons
+                        )
+
+                        st.info(
+                            recommendation
+                        )
+
+                    except Exception:
+
+                        st.info(
+                            "Review the document carefully before "
+                            "trusting its contents."
+                        )
+
+                    st.divider()
+
+                    # ====================================================
+                    # PDF REPORT
+                    # ====================================================
+
+                    st.subheader(
+                        "📄 Verification Report"
+                    )
+
+                    try:
+
+                        report = generate_report(
+                            "Document",
+                            uploaded_document.name,
+                            score,
+                            status,
+                            reasons
+                        )
+
+                        with open(
+                            report,
+                            "rb"
+                        ) as pdf:
+
+                            st.download_button(
+                                "📥 Download PDF Report",
+                                pdf,
+                                file_name="Veritas_Document_Report.pdf",
+                                mime="application/pdf",
+                                key="document_report_download"
                             )
+
+                    except Exception as e:
+
+                        st.warning(
+                            f"Report generation unavailable: {e}"
+                        )
+
+                except Exception as e:
+
+                    st.error(
+                        f"❌ Document analysis error: {e}"
+                    )
+
 
                     # ====================================================
                     # AI VERDICT
