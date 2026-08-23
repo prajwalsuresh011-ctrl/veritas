@@ -922,7 +922,7 @@ security results and help users understand potential threats.
 # IMAGE VERIFICATION
 # ====================================================
 
-elif selected == "Image":
+if selected == "Image":
 
     st.title("🖼️ Image Verification")
 
