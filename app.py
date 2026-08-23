@@ -756,6 +756,84 @@ elif selected == "Home":
         )
         
     st.divider()
+        st.divider()
+
+    # ====================================================
+    # RECENT SCAN ACTIVITY
+    # ====================================================
+
+    st.subheader("🕒 Recent Scan Activity")
+
+    history = get_history(
+        st.session_state.username
+    )
+
+    if not history:
+
+        st.info(
+            "No scans yet. Start your first verification!"
+        )
+
+    else:
+
+        recent_scans = history[:5]
+
+        for scan in recent_scans:
+
+            scan_type = scan[2]
+            target = scan[3]
+            score = scan[4]
+            status = scan[5]
+            scan_date = scan[6]
+
+            if status in [
+                "SAFE",
+                "Verified",
+                "Likely Genuine"
+            ]:
+
+                icon = "🟢"
+
+            elif status in [
+                "SUSPICIOUS",
+                "Needs Review"
+            ]:
+
+                icon = "🟡"
+
+            else:
+
+                icon = "🔴"
+
+            with st.container():
+
+                col1, col2, col3 = st.columns(
+                    [2, 4, 2]
+                )
+
+                with col1:
+
+                    st.write(
+                        f"{icon} **{scan_type}**"
+                    )
+
+                with col2:
+
+                    st.write(
+                        target
+                    )
+
+                with col3:
+
+                    st.write(
+                        f"**{score}/100**"
+                    )
+
+                st.caption(
+                    f"Status: {status}  •  {scan_date}"
+                )
+
+                st.divider()
 
     # ====================================================
     # QUICK VERIFICATION
