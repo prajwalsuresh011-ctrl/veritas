@@ -469,6 +469,73 @@ if not st.session_state.logged_in:
 
 
 # ====================================================
+## ====================================================
+# SIDEBAR
+# ====================================================
+
+navigation_options = [
+    "Home",
+    "URL",
+    "QR Code",
+    "Document",
+    "Image",
+    "History",
+    "Analytics",
+    "AI Assistant",
+    "Settings"
+]
+
+# ====================================================
+# HOME NAVIGATION
+# ====================================================
+
+if (
+    "home_navigation" in st.session_state
+    and st.session_state.home_navigation in navigation_options
+):
+    default_index = navigation_options.index(
+        st.session_state.home_navigation
+    )
+else:
+    default_index = 0
+
+
+# ====================================================
+# # ====================================================
+# SIDEBAR
+# ====================================================
+
+navigation_options = [
+    "Home",
+    "URL",
+    "QR Code",
+    "Document",
+    "Image",
+    "History",
+    "Analytics",
+    "AI Assistant",
+    "Settings"
+]
+
+# ====================================================
+# HOME NAVIGATION
+# ====================================================
+
+if (
+    "home_navigation" in st.session_state
+    and st.session_state.home_navigation in navigation_options
+):
+
+    default_index = navigation_options.index(
+        st.session_state.home_navigation
+    )
+
+else:
+
+    default_index = 0
+
+
+# ====================================================
 # SIDEBAR
 # ====================================================
 
@@ -481,29 +548,9 @@ with st.sidebar:
 
     st.title("Veritas")
 
-    selected = option_menu(
-        menu_title="Navigation",
-
-        navigation_options = [
-    "Home",
-    "URL",
-    "QR Code",
-    "Document",
-    "Image",
-    "History",
-    "Analytics",
-    "AI Assistant",
-    "Settings"
-]
-
-if st.session_state.home_navigation in navigation_options:
-    default_index = navigation_options.index(
-        st.session_state.home_navigation
-    )
-else:
-    default_index = 0
-
-with st.sidebar:
+    # ====================================================
+    # OPTION MENU
+    # ====================================================
 
     selected = option_menu(
         menu_title="Navigation",
@@ -553,14 +600,22 @@ with st.sidebar:
         }
     )
 
-# Clear the temporary Home navigation request
-st.session_state.home_navigation = None
-
     st.divider()
+
+    # ====================================================
+    # USER INFORMATION
+    # ====================================================
 
     st.write(
         f"👤 Logged in as: **{st.session_state.username}**"
     )
+
+
+# ====================================================
+# CLEAR TEMPORARY HOME NAVIGATION
+# ====================================================
+
+st.session_state.home_navigation = None
 
     # -----------------------------
     # USER INFORMATION
@@ -587,6 +642,7 @@ st.session_state.home_navigation = None
 
 # ====================================================
 ## ====================================================
+# ====================================================
 # HOME DASHBOARD
 # ====================================================
 
@@ -605,7 +661,61 @@ elif selected == "Home":
     st.divider()
 
     # ====================================================
-    # GET STATISTICS
+    # QUICK VERIFICATION
+    # ====================================================
+
+    st.subheader("🚀 Quick Verification")
+
+    st.write(
+        "Choose what you want to verify:"
+    )
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+
+        if st.button(
+            "🌐 URL",
+            use_container_width=True
+        ):
+
+            st.session_state.home_navigation = "URL"
+            st.rerun()
+
+    with col2:
+
+        if st.button(
+            "📱 QR Code",
+            use_container_width=True
+        ):
+
+            st.session_state.home_navigation = "QR Code"
+            st.rerun()
+
+    with col3:
+
+        if st.button(
+            "📄 Document",
+            use_container_width=True
+        ):
+
+            st.session_state.home_navigation = "Document"
+            st.rerun()
+
+    with col4:
+
+        if st.button(
+            "🖼️ Image",
+            use_container_width=True
+        ):
+
+            st.session_state.home_navigation = "Image"
+            st.rerun()
+
+    st.divider()
+
+    # ====================================================
+    # SECURITY OVERVIEW
     # ====================================================
 
     stats = get_statistics(
@@ -617,40 +727,34 @@ elif selected == "Home":
     suspicious = stats["suspicious"]
     dangerous = stats["dangerous"]
 
-    # ====================================================
-    # STATISTICS CARDS
-    # ====================================================
+    st.subheader("📊 Security Overview")
 
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-
         st.metric(
             "📊 Total Scans",
             total
         )
 
     with col2:
-
         st.metric(
             "🟢 Safe",
             safe
         )
 
     with col3:
-
         st.metric(
             "🟡 Suspicious",
             suspicious
         )
 
     with col4:
-
         st.metric(
             "🔴 Dangerous",
             dangerous
         )
-
+        
     st.divider()
 
     # ====================================================
