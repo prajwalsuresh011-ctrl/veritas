@@ -637,7 +637,6 @@ with st.sidebar:
 
 if selected == "Home":
 
-```
 st.title("🛡️ Veritas AI")
 
 st.write(
