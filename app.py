@@ -1802,30 +1802,40 @@ elif selected == "Document":
                             "No suspicious indicators were detected."
                         )
 
-                    # ====================================================
-                    # EXTRACTED TEXT
-                    # ====================================================
+                   # ====================================================
+# PDF VERIFICATION REPORT
+# ====================================================
 
-                    if extracted_text:
+st.divider()
 
-                        st.divider()
+st.subheader("📄 Verification Report")
 
-                        st.subheader(
-                            "📄 Extracted Content"
-                        )
+try:
 
-                        st.text_area(
-                            "Document Text",
-                            extracted_text,
-                            height=300
-                        )
+    report_path = generate_report(
+        "Document",
+        uploaded_document.name,
+        score,
+        status,
+        reasons
+    )
 
-                except Exception as e:
+    with open(report_path, "rb") as pdf_file:
 
-                    st.error(
-                        f"❌ Document analysis error: {e}"
-                    )
+        st.download_button(
+            label="📥 Download PDF Report",
+            data=pdf_file,
+            file_name="Veritas_Document_Report.pdf",
+            mime="application/pdf",
+            use_container_width=True,
+            key="document_report_download"
+        )
 
+except Exception as e:
+
+    st.warning(
+        f"⚠️ Report generation unavailable: {e}"
+    )
                     # ====================================================
                     # AI VERDICT
                     # ====================================================
