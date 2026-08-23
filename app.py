@@ -915,11 +915,7 @@ Using AI-based threat analysis and verification.
 security results and help users understand potential threats.
 """
     )
-
-
-
 # ====================================================
-# I# ====================================================
 # IMAGE VERIFICATION
 # ====================================================
 
@@ -977,15 +973,19 @@ elif selected == "Image":
                     # ====================================================
 
                     verification_id = save_scan(
-                    st.session_state.username,
-                    "Image",
-                    uploaded_image.name,
-                    score,
-                     status
+                        st.session_state.username,
+                        "Image",
+                        uploaded_image.name,
+                        score,
+                        status
                     )
 
                     st.success(
                         "✅ Image analysis completed."
+                    )
+
+                    st.info(
+                        f"🔐 Verification ID: **{verification_id}**"
                     )
 
                     st.divider()
@@ -1029,35 +1029,44 @@ elif selected == "Image":
                     # TRUST SCORE
                     # ====================================================
 
+                    st.subheader(
+                        "🛡️ Trust Score"
+                    )
+
                     col1, col2 = st.columns(2)
 
                     with col1:
 
                         st.metric(
-                            "🛡️ Trust Score",
+                            "Trust Score",
                             f"{score}/100"
                         )
 
                     with col2:
 
-                        if score >= 80:
-
+                        if status in [
+                            "SAFE",
+                            "Verified",
+                            "Likely Genuine"
+                        ]:
 
                             st.success(
-                                "🟢 LIKELY GENUINE"
+                                f"🟢 {status}"
                             )
 
-                        elif score >= 50:
-
+                        elif status in [
+                            "SUSPICIOUS",
+                            "Needs Review"
+                        ]:
 
                             st.warning(
-                                "🟡 NEEDS REVIEW"
+                                f"🟡 {status}"
                             )
 
                         else:
 
                             st.error(
-                                "🔴 SUSPICIOUS"
+                                f"🔴 {status}"
                             )
 
                     st.divider()
@@ -1067,13 +1076,13 @@ elif selected == "Image":
                     # ====================================================
 
                     st.subheader(
-                        "🔍 Image Analysis"
+                        "🔍 Security Analysis"
                     )
 
-                    if len(reasons) == 0:
+                    if not reasons:
 
                         st.success(
-                            "No suspicious indicators were detected."
+                            "✅ No suspicious indicators were detected."
                         )
 
                     else:
@@ -1081,10 +1090,15 @@ elif selected == "Image":
                         for reason in reasons:
 
                             st.write(
-                                "✔️",
+                                "⚠️",
                                 reason
                             )
 
+                except Exception as e:
+
+                    st.error(
+                        f"❌ Image analysis error: {e}"
+                    )
                     # ====================================================
                     # AI VERDICT
                     # ====================================================
