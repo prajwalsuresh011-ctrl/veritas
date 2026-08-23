@@ -472,6 +472,9 @@ if not st.session_state.logged_in:
 # ====================================================
 # ====================================================
 # NAVIGATION OPTIONS
+# ===================================================
+# ====================================================
+# SIDEBAR
 # ====================================================
 
 navigation_options = [
@@ -482,6 +485,7 @@ navigation_options = [
     "Image",
     "History",
     "Analytics",
+    "Verify ID",
     "AI Assistant",
     "Settings"
 ]
@@ -491,10 +495,18 @@ navigation_options = [
 # ====================================================
 
 if "selected_page" not in st.session_state:
+
     st.session_state.selected_page = "Home"
 
 if st.session_state.selected_page not in navigation_options:
+
     st.session_state.selected_page = "Home"
+
+
+# ====================================================
+# SIDEBAR
+# ====================================================
+
 with st.sidebar:
 
     st.image(
@@ -505,6 +517,7 @@ with st.sidebar:
     st.title("Veritas")
 
     selected = option_menu(
+
         menu_title="Navigation",
 
         options=navigation_options,
@@ -517,6 +530,7 @@ with st.sidebar:
             "image",
             "clock-history",
             "bar-chart-fill",
+            "shield-check",
             "robot",
             "gear-fill"
         ],
@@ -530,6 +544,7 @@ with st.sidebar:
         orientation="vertical",
 
         styles={
+
             "container": {
                 "padding": "5px"
             },
@@ -554,8 +569,10 @@ with st.sidebar:
         }
     )
 
-    # IMPORTANT
-    # Save the sidebar selection
+    # ====================================================
+    # SAVE SELECTED PAGE
+    # ====================================================
+
     st.session_state.selected_page = selected
 
     st.divider()
@@ -563,6 +580,10 @@ with st.sidebar:
     st.write(
         f"👤 Logged in as: **{st.session_state.username}**"
     )
+
+    # ====================================================
+    # LOGOUT
+    # ====================================================
 
     if st.button(
         "🚪 Logout",
@@ -574,18 +595,10 @@ with st.sidebar:
         st.session_state.selected_page = "Home"
 
         st.rerun()
+
+
 # ====================================================
-# CLEAR TEMPORARY HOME NAVIGATION
-# ====================================================
-
-
-
-
-
-# # ====================================================
-
 # HOME DASHBOARD
-
 # ====================================================
 
 if selected == "Home":
@@ -655,6 +668,8 @@ if selected == "Home":
             st.rerun()
 
     st.divider()
+
+
 
     # ====================================================
     # SECURITY OVERVIEW
