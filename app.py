@@ -355,6 +355,9 @@ if "logged_in" not in st.session_state:
 
 if "username" not in st.session_state:
     st.session_state.username = ""
+
+if "home_navigation" not in st.session_state:
+    st.session_state.home_navigation = None
 # =========================
 #
 # ====================================================
@@ -481,34 +484,48 @@ with st.sidebar:
     selected = option_menu(
         menu_title="Navigation",
 
-        options=[
-            "Home",
-            "URL",
-            "QR Code",
-            "Document",
-            "Image",
-            "History",
-            "Verify ID",
-            "Analytics",
-            "AI Assistant",
-            "Settings"
-        ],
+        navigation_options = [
+    "Home",
+    "URL",
+    "QR Code",
+    "Document",
+    "Image",
+    "History",
+    "Analytics",
+    "AI Assistant",
+    "Settings"
+]
+
+if st.session_state.home_navigation in navigation_options:
+    default_index = navigation_options.index(
+        st.session_state.home_navigation
+    )
+else:
+    default_index = 0
+
+with st.sidebar:
+
+    selected = option_menu(
+        menu_title="Navigation",
+
+        options=navigation_options,
 
         icons=[
-    "house-fill",
-    "globe2",
-    "qr-code",
-    "file-earmark-text",
-    "image",
-    "clock-history",
-    "shield-check",
-    "bar-chart-fill",
-    "robot",
-    "gear-fill"
-],
+            "house-fill",
+            "globe2",
+            "qr-code",
+            "file-earmark-text",
+            "image",
+            "clock-history",
+            "bar-chart-fill",
+            "robot",
+            "gear-fill"
+        ],
 
         menu_icon="shield-lock",
-        default_index=0,
+
+        default_index=default_index,
+
         orientation="vertical",
 
         styles={
@@ -535,6 +552,9 @@ with st.sidebar:
             }
         }
     )
+
+# Clear the temporary Home navigation request
+st.session_state.home_navigation = None
 
     st.divider()
 
