@@ -629,199 +629,27 @@ with st.sidebar:
 
 
 
-# ====================================================
+# # ====================================================
+
 # HOME DASHBOARD
+
 # ====================================================
 
 if selected == "Home":
 
-    st.title("🛡️ Veritas AI")
+```
+st.title("🛡️ Veritas AI")
 
-    st.write(
-        f"Welcome back, **{st.session_state.username}** 👋"
-    )
+st.write(
+    f"Welcome back, **{st.session_state.username}** 👋"
+)
 
-    st.caption(
-        "AI-Powered Digital Verification & Cybersecurity Platform"
-    )
+st.caption(
+    "AI-Powered Digital Verification & Cybersecurity Platform"
+)
 
-    st.divider()
+st.divider()
 
-    st.subheader("🚀 Quick Verification")
-
-    col1, col2, col3, col4 = st.columns(4)
-
-    with col1:
-
-        if st.button(
-            "🌐 URL",
-            use_container_width=True,
-            key="home_url_button"
-        ):
-
-            st.session_state.home_navigation = "URL"
-            st.rerun()
-
-    with col2:
-
-        if st.button(
-            "📱 QR Code",
-            use_container_width=True,
-            key="home_qr_button"
-        ):
-
-            st.session_state.home_navigation = "QR Code"
-            st.rerun()
-
-    with col3:
-
-        if st.button(
-            "📄 Document",
-            use_container_width=True,
-            key="home_document_button"
-        ):
-
-            st.session_state.home_navigation = "Document"
-            st.rerun()
-
-    with col4:
-
-        if st.button(
-            "🖼️ Image",
-            use_container_width=True,
-            key="home_image_button"
-        ):
-
-            st.session_state.home_navigation = "Image"
-            st.rerun()
-
-    st.divider()
-
-    # ====================================================
-    # SECURITY OVERVIEW
-    # ====================================================
-
-    st.subheader("📊 Security Overview")
-
-    stats = get_statistics(
-        st.session_state.username
-    )
-
-    total = stats["total"]
-    safe = stats["safe"]
-    suspicious = stats["suspicious"]
-    dangerous = stats["dangerous"]
-
-    col1, col2, col3, col4 = st.columns(4)
-
-    with col1:
-
-        st.metric(
-            "📊 Total Scans",
-            total
-        )
-
-    with col2:
-
-        st.metric(
-            "🟢 Safe",
-            safe
-        )
-
-    with col3:
-
-        st.metric(
-            "🟡 Suspicious",
-            suspicious
-        )
-
-    with col4:
-
-        st.metric(
-            "🔴 Dangerous",
-            dangerous
-        )
-
-    st.divider()
-
-    # ====================================================
-    # RECENT SCAN ACTIVITY
-    # ====================================================
-
-    st.subheader("🕒 Recent Scan Activity")
-
-    history = get_history(
-        st.session_state.username
-    )
-
-    if not history:
-
-        st.info(
-            "No scans yet. Start your first verification!"
-        )
-
-    else:
-
-        recent_scans = history[:5]
-
-        for scan in recent_scans:
-
-            scan_type = scan[2]
-            target = scan[3]
-            score = scan[4]
-            status = scan[5]
-            scan_date = scan[6]
-
-            if status in [
-                "SAFE",
-                "Verified",
-                "Likely Genuine"
-            ]:
-
-                icon = "🟢"
-
-            elif status in [
-                "SUSPICIOUS",
-                "Needs Review"
-            ]:
-
-                icon = "🟡"
-
-            else:
-
-                icon = "🔴"
-
-            col1, col2, col3 = st.columns(
-                [2, 5, 2]
-            )
-
-            with col1:
-
-                st.write(
-                    f"{icon} **{scan_type}**"
-                )
-
-            with col2:
-
-                st.write(
-                    target
-                )
-
-            with col3:
-
-                st.write(
-                    f"**{score}/100**"
-                )
-
-            st.caption(
-                f"Status: {status} • {scan_date}"
-            )
-
-            st.divider()
-
-    # ====================================================
-    # QUICK VERIFICATION
-    # ====================================================
 # ====================================================
 # QUICK VERIFICATION
 # ====================================================
@@ -841,7 +669,6 @@ with col1:
         st.session_state.selected_page = "URL"
         st.rerun()
 
-
 with col2:
 
     if st.button(
@@ -853,7 +680,6 @@ with col2:
         st.session_state.selected_page = "QR Code"
         st.rerun()
 
-
 with col3:
 
     if st.button(
@@ -864,7 +690,6 @@ with col3:
 
         st.session_state.selected_page = "Document"
         st.rerun()
-
 
 with col4:
 
@@ -878,89 +703,218 @@ with col4:
         st.rerun()
 
 st.divider()
-    # ====================================================
-    # SECURITY OVERVIEW
-    # ====================================================
 
-    st.subheader(
-        "🛡️ Security Overview"
+# ====================================================
+# SECURITY OVERVIEW
+# ====================================================
+
+st.subheader("📊 Security Overview")
+
+stats = get_statistics(
+    st.session_state.username
+)
+
+total = stats["total"]
+safe = stats["safe"]
+suspicious = stats["suspicious"]
+dangerous = stats["dangerous"]
+
+# ====================================================
+# STATISTICS CARDS
+# ====================================================
+
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+
+    st.metric(
+        "📊 Total Scans",
+        total
     )
 
-    if total > 0:
+with col2:
 
-        safe_percentage = (
-            safe / total
-        ) * 100
+    st.metric(
+        "🟢 Safe",
+        safe
+    )
 
-        suspicious_percentage = (
-            suspicious / total
-        ) * 100
+with col3:
 
-        dangerous_percentage = (
-            dangerous / total
-        ) * 100
+    st.metric(
+        "🟡 Suspicious",
+        suspicious
+    )
 
-        col1, col2 = st.columns(2)
+with col4:
+
+    st.metric(
+        "🔴 Dangerous",
+        dangerous
+    )
+
+st.divider()
+
+# ====================================================
+# SECURITY PERCENTAGE
+# ====================================================
+
+st.subheader("🛡️ Security Status")
+
+if total > 0:
+
+    safe_percentage = (
+        safe / total
+    ) * 100
+
+    suspicious_percentage = (
+        suspicious / total
+    ) * 100
+
+    dangerous_percentage = (
+        dangerous / total
+    ) * 100
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+
+        st.write(
+            f"🟢 Safe: **{safe_percentage:.1f}%**"
+        )
+
+        st.progress(
+            safe_percentage / 100
+        )
+
+        st.write(
+            f"🟡 Suspicious: "
+            f"**{suspicious_percentage:.1f}%**"
+        )
+
+        st.progress(
+            suspicious_percentage / 100
+        )
+
+        st.write(
+            f"🔴 Dangerous: "
+            f"**{dangerous_percentage:.1f}%**"
+        )
+
+        st.progress(
+            dangerous_percentage / 100
+        )
+
+    with col2:
+
+        if dangerous > 0:
+
+            st.error(
+                "⚠️ Dangerous content was detected "
+                "in your previous scans."
+            )
+
+        elif suspicious > 0:
+
+            st.warning(
+                "⚠️ Some scans require additional "
+                "verification."
+            )
+
+        else:
+
+            st.success(
+                "✅ No dangerous scans detected "
+                "in your current history."
+            )
+
+else:
+
+    st.info(
+        "No scans available yet. "
+        "Start your first verification."
+    )
+
+st.divider()
+
+# ====================================================
+# RECENT VERIFICATION ACTIVITY
+# ====================================================
+
+st.subheader("🕒 Recent Verification Activity")
+
+history = get_history(
+    st.session_state.username
+)
+
+if not history:
+
+    st.info(
+        "No verification scans yet. "
+        "Start your first verification!"
+    )
+
+else:
+
+    recent_scans = history[:5]
+
+    for scan in recent_scans:
+
+        scan_type = scan[2]
+        target = scan[3]
+        score = scan[4]
+        status = scan[5]
+        scan_date = scan[6]
+
+        # Status icon
+
+        if status in [
+            "SAFE",
+            "Verified",
+            "Likely Genuine"
+        ]:
+
+            icon = "🟢"
+
+        elif status in [
+            "SUSPICIOUS",
+            "Needs Review"
+        ]:
+
+            icon = "🟡"
+
+        else:
+
+            icon = "🔴"
+
+        col1, col2, col3 = st.columns(
+            [2, 5, 2]
+        )
 
         with col1:
 
             st.write(
-                f"🟢 Safe: **{safe_percentage:.1f}%**"
-            )
-
-            st.progress(
-                safe_percentage / 100
-            )
-
-            st.write(
-                f"🟡 Suspicious: "
-                f"**{suspicious_percentage:.1f}%**"
-            )
-
-            st.progress(
-                suspicious_percentage / 100
-            )
-
-            st.write(
-                f"🔴 Dangerous: "
-                f"**{dangerous_percentage:.1f}%**"
-            )
-
-            st.progress(
-                dangerous_percentage / 100
+                f"{icon} **{scan_type}**"
             )
 
         with col2:
 
-            if dangerous > 0:
+            st.write(
+                str(target)[:70]
+            )
 
-                st.error(
-                    "⚠️ Dangerous content was detected "
-                    "in your previous scans."
-                )
+        with col3:
 
-            elif suspicious > 0:
+            st.write(
+                f"**{score}/100**"
+            )
 
-                st.warning(
-                    "⚠️ Some scans require additional "
-                    "verification."
-                )
-
-            else:
-
-                st.success(
-                    "✅ No dangerous scans detected "
-                    "in your current history."
-                )
-
-    else:
-
-        st.info(
-            "No scans available yet. "
-            "Start your first verification."
+        st.caption(
+            f"Status: {status} • {scan_date}"
         )
 
-    st.divider()
+        st.divider()
+```
 
     # ====================================================
     # RECENT SCANS
