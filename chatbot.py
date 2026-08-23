@@ -1,5 +1,5 @@
 import re
- ollama
+import ollama
 
 from url_checker import analyze_url
 from database import get_history
