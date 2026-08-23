@@ -1,9 +1,14 @@
 import sqlite3
 from datetime import datetime
 import uuid
+from pathlib import Path
 
 
-DATABASE_NAME = "veritas.db"
+# ====================================================
+# DATABASE PATH
+# ====================================================
+
+DATABASE_NAME = Path("veritas.db")
 
 
 # ====================================================
@@ -11,82 +16,11 @@ DATABASE_NAME = "veritas.db"
 # ====================================================
 
 def get_connection():
-    return sqlite3.connect(DATABASE_NAME)
 
-
-# ====================================================
-# CREATE / UPDATE DATABASE TABLE
-# ====================================================
-
-def create_table():
-
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS scans (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            verification_id TEXT UNIQUE,
-            username TEXT,
-            scan_type TEXT,
-            target TEXT,
-            score INTEGER,
-            status TEXT,
-            date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    """)
-
-    # Check existing columns
-    cursor.execute("PRAGMA table_info(scans)")
-
-    columns = [
-        column[1]
-        for column in cursor.fetchall()
-    ]
-
-    # Add missing columns for old databases
-    if "username" not in columns:
-
-        cursor.execute("""
-            ALTER TABLE scans
-            ADD COLUMN username TEXT
-        """)
-
-    if "verification_id" not in columns:
-
-        cursor.execute("""
-            ALTER TABLE scans
-            ADD COLUMN verification_id TEXT
-        """)
-
-        # Give old records verification IDs
-        cursor.execute("""
-            SELECT id
-            FROM scans
-            WHERE verification_id IS NULL
-        """)
-
-        old_records = cursor.fetchall()
-
-        for row in old_records:
-
-            verification_id = (
-                "VERITAS-"
-                f"{datetime.now().year}-"
-                f"{uuid.uuid4().hex[:8].upper()}"
-            )
-
-            cursor.execute("""
-                UPDATE scans
-                SET verification_id = ?
-                WHERE id = ?
-            """, (
-                verification_id,
-                row[0]
-            ))
-
-    conn.commit()
-    conn.close()
+    return sqlite3.connect(
+        str(DATABASE_NAME),
+        check_same_thread=False
+    )
 
 
 # ====================================================
@@ -103,8 +37,39 @@ def generate_verification_id():
 
 
 # ====================================================
-# SAVE SCAN RESULT
+# CREATE / UPDATE DATABASE TABLE
 # ====================================================
+
+def create_table():
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS scans (
+
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+            verification_id TEXT UNIQUE,
+
+            username TEXT,
+
+            scan_type TEXT,
+
+            target TEXT,
+
+            score INTEGER,
+
+            status TEXT,
+
+            date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
+    conn.commit()
+
+    conn.close()
+
 
 # ====================================================
 # SAVE SCAN RESULT
@@ -117,6 +82,9 @@ def save_scan(
     score,
     status
 ):
+
+    # Make sure database exists
+    create_table()
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -148,11 +116,14 @@ def save_scan(
 
     return verification_id
 
+
 # ====================================================
 # GET USER SCAN HISTORY
 # ====================================================
 
 def get_history(username):
+
+    create_table()
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -187,6 +158,8 @@ def get_scan_by_verification_id(
     verification_id,
     username=None
 ):
+
+    create_table()
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -226,7 +199,7 @@ def get_scan_by_verification_id(
             FROM scans
             WHERE verification_id = ?
         """, (
-            verification_id
+            verification_id,
         ))
 
     result = cursor.fetchone()
@@ -241,6 +214,8 @@ def get_scan_by_verification_id(
 # ====================================================
 
 def clear_history(username):
+
+    create_table()
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -260,12 +235,13 @@ def clear_history(username):
 
 def get_statistics(username):
 
+    create_table()
+
     conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
         SELECT
-
             COUNT(*),
 
             SUM(
@@ -321,7 +297,8 @@ def get_statistics(username):
 
 
 # ====================================================
-# CREATE DATABASE AUTOMATICALLY
+# INITIALIZE DATABASE
 # ====================================================
 
 create_table()
+
