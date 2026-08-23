@@ -1069,6 +1069,9 @@ elif selected == "URL":
                     st.success(
                         "URL analysis completed."
                     )
+                    st.info(
+    f"🔐 Verification ID: **{verification_id}**"
+)
 
                     st.divider()
 
